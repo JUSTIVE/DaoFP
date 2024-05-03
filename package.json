@@ -1,0 +1,19 @@
+{
+  "name": "daofp",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "extract": "bun scripts/extract.ts"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.7.2",
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@types/node": "^20.12.8",
+    "openai": "^4.40.2"
+  }
+}
