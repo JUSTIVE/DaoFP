@@ -1,23 +1,6 @@
 import * as fs from "node:fs";
 import { argv } from "node:process";
-
-function getChapter(chapter: string): string {
-  const fileList = fs
-    .readdirSync("./content")
-    .filter((f) => f.startsWith(`${chapter}-`));
-
-  return fileList[0] ?? "";
-}
-
-function _pipe(): unknown {
-  let e = arguments[0];
-  for (let t = 1, p = arguments.length; t < p; t++) {
-    e = arguments[t](e);
-  }
-  return e;
-}
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-const pipe: any = _pipe;
+import { getChapter, pipe } from "./utils";
 
 function readFile(path: string): string {
   return fs.readFileSync(path, "utf8");
