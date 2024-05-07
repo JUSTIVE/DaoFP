@@ -21,3 +21,6 @@ OPENAI_API_KEY=<<API KEY>>
 
 초기에 .tex 파일 전체를 처리하려 했으나, gpt-4 의 응답 길이를 초과하는 것으로 보입니다. 이에 각 문장들을 tex에서 추출하여 이를 번역하고 원 파일에 적용한 후에 tex를 compile 하려 합니다.
 
+- 당장 tex 파싱에 문제가 있어, 손으로 파싱(..) 하고 `pbpaste > ./in.txt && bun ./scripts/translate.ts && bat ./response.txt | pbcopy` 같이 반수동 번역으로 진행했습니다.
+
+컴파일은 pdflatex을 통해 진행했습니다.
