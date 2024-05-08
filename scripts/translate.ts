@@ -1,11 +1,7 @@
-import fs from "node:fs";
 import { env } from "node:process";
-// import { env } from "node:process";
 import OpenAI from "openai";
 
-export const fileContent = fs.readFileSync("./in.txt", "utf8");
-
-export const translate = async (content:string) => {
+export const translate = async (content:string):Promise<string> => {
   const openai = new OpenAI({
     apiKey: env["OPENAI_API_KEY"]
   }); 
@@ -20,14 +16,8 @@ export const translate = async (content:string) => {
     model: "gpt-4",
     stream:false
   });
-
-  fs.writeFileSync("./response.txt" ?? "", response.choices[0]?.message.content ?? "");
-
-  
-  // console.log("done");
-  // console.log(response.choices[0].message.content);
-  // return response.choices[0].message.content;
+  return response.choices[0]?.message.content??'';
 }
 
-translate(fileContent)
+
 
