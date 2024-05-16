@@ -4,9 +4,11 @@ import { extract } from "./extract";
 import { A, D, F, pipe, S } from "@mobily/ts-belt";
 import { translate } from "./translate";
 import { setTimeout } from "node:timers/promises";
-
 import chalk from "chalk";
 import * as fs from "node:fs";
+import { build } from "./build";
+import { execSync } from "node:child_process";
+import path from "node:path";
 
 const fileOfChapter = getChapter(argv[2] ?? "");
 console.log(fileOfChapter);
@@ -90,10 +92,15 @@ pipe(
     Object.hasOwn(translatedMap, S.trim(x)) && S.trim(x).length > 0
       ? translatedMap[
           S.trim(x) as unknown as keyof typeof translatedMap
-        ].replaceAll("\\n", "")
+        ]?.replaceAll("\\n", "") ?? x
       : x,
   ),
   A.insertAt(1, "\\usepackage{kotex}"),
   A.join("\n"),
   F.tap(writeFile(outPath)),
 );
+
+console.log(chalk.bgMagenta.white("TRANSLATION DONE"));
+build(argv[2] ?? "");
+console.log(chalk.bgMagenta.white("PDF GENERATION DONE"));
+execSync(`open ./kr/pdf/${path.basename(fileOfChapter, ".tex")}.pdf`);
