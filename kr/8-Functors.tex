@@ -1,0 +1,853 @@
+\documentclass[DaoFP]{subfiles}
+\usepackage{kotex}
+\begin{document}
+\setcounter{chapter}{7}
+
+\chapter{함자(Functors)}
+\section{카테고리(Categories)}
+
+지금까지 우리는 오직 한 가지 범주---타입과 함수들의 범주만을 보았습니다. 그러니 범주에 관한 필수 정보를 빠르게 모아봅시다.
+
+카테고리는 객체들과 그것들 사이를 오가는 화살표들의 모음입니다. 모든 조합 가능한 화살표 쌍은 조합될 수 있습니다. 조합은 결합 법칙을 따르며, 모든 객체마다 되돌아오는 항등 화살표(identity arrow)가 있습니다.
+
+타입(types)과 함수(functions)가 범주(category)를 형성한다는 사실은 합성을 다음과 같이 정의하여 Haskell에서 표현될 수 있습니:
+
+\begin{haskell}
+(.) :: (b -> c) -> (a -> b) -> (a -> c)
+g . f = \x -> g (f x)
+\end{haskell}
+두 함수 \hask{g}와 \hask{f}의 합성은 먼저 \hask{f}를 인수에 적용하고 그 결과에 \hask{g}를 적용하는 새로운 함수입니다.
+
+정체성(Identity)은 다형적인 "아무 것도 하지 않는" 함수입니다:
+\begin{haskell}
+id :: a -> a
+id x = x
+\end{haskell}
+자신을 쉽게 설득할 수 있습니 다, 이러한 합성은 결합 법칙을 따르며, \hask{id} 와 합성 하는 것은 함수에 아무것도 하지 않는 다는 것을.
+
+범주의 정의를 바탕으로, 우리는 여러 가지 이상한 범주들을 생각해낼 수 있습니니다. 예를 들어, 객체도 없고 화살표도 없는 범주가 있습니니다. 이는 범주의 모든 조건을 공허하게 충족합니니다. 또 다른 예로, 단일 객체와 단일 화살표만을 포함하는 범주가 있습니니다 (그 화살표가 무엇인지 추측할 수 있겠습니까?). 연결되지 않은 두 객체를 가진 범주가 있습니니다, 두 객체가 단일 화살표로 연결된 범주가 있습니니다 (플러스 두 개의 항등 화살표(identity arrows)), 등등. 이러한 예는 내가 \index{stick-figure category}stick-figure category(막대 인형 범주)라고 부르는 것들로, 소수의 객체와 화살표를 가진 범주입니니다.
+\subsection{집합의 범주(Category of sets)}
+
+
+
+집합들은 그들 자신의 범주 $\mathbf{Set}$\footnote{다시 말해, ``크기'' 문제, 특히 모든 집합의 집합의 존재하지 않음을 무시함.}를 형성합니다. 그 범주의 객체들은 집합들이며, 화살표들은 집합들 간의 함수(함수, functions)입니다. 이러한 함수들은 특별한 종류의 관계(관계, relations)로 정의되며, 이 관계들은 그 자체로 쌍들의 집합으로 정의됩니다.
+
+
+
+
+
+
+
+\subsection{반대 범주(Opposite categories)}
+
+ 
+
+
+
+
+
+
+두 화살표 $f^{op} \colon a \to b$ 와 $g^{op} \colon b \to c$의 합성 $g^{op} \circ f^{op}$은 화살표 $f \circ g$로 주어집니다 (순서가 반대로 되어 있는 것을 주의하세요).
+
+
+
+\subsection{곱 카테고리(Product categories)}
+
+
+
+만약 $\mathcal{C}$에서 화살표 $f \colon c \to c'$와 $\mathcal{D}$에서 화살표 $g \colon d \to d'$가 있다면, $\mathcal{C} \times \mathcal{D}$에서 이에 대응하는 화살표 $\langle f, g \rangle$가 존재합니다. 이 화살표는 $\mathcal{C} \times \mathcal{D}$의 객체 $\langle c, d \rangle$에서 $\langle c', d' \rangle$로 갑니다. 이러한 두 화살표는 각각 $\mathcal{C}$와 $\mathcal{D}$에서 그 구성 요소들이 합성 가능할 때 합성할 수 있습니다. 항등 화살표는 항등 화살표의 쌍입니다.
+
+우리가 가장 관심있는 두 가지 곱 카테고리(product categories)는 $\mathcal{C} \times \mathcal{C}$와 $\mathcal{C}^{op} \times \mathcal{C}$입니다. 여기서 $\mathcal{C}$는 우리가 익숙한 유형(types)과 함수들(functions)의 카테고리(category)입니다.
+
+두 카테고리 모두에서, 대상은 $\mathcal{C}$의 대상 쌍입니다. 첫 번째 카테고리인 $\mathcal{C} \times \mathcal{C}$에서는 $\langle a, b \rangle $에서 $\langle a', b' \rangle $으로의 사상(morphism)은 $\langle f \colon a \to a', g \colon b \to b' \rangle $ 쌍입니다. 두 번째 카테고리인 $\mathcal{C}^{op} \times \mathcal{C}$에서는 사상(morphism)이 $\langle f \colon a' \to a, g \colon b \to b' \rangle $ 쌍인데, 여기서 첫 번째 화살표는 반대 방향으로 갑니다.
+
+\subsection{슬라이스 범주(Slice categories)}
+
+
+
+슬라이스 범주(slice category) $\cat C/c$는 특정 객체 $c$가 그 범주 $\cat C$의 관점에서 어떻게 보이는지를 설명합니다. 이는 $c$를 가리키는 모든 화살표의 총체입니다. 하지만 화살표를 명시하기 위해서는 그 양 끝을 모두 명시해야 합니다. 이 중 한 끝은 $c$로 고정되어 있으므로, 우리는 다른 한쪽만 지정하면 됩니다.
+
+
+
+두 객체 $\langle e, p \rangle$와 $\langle e', p' \rangle$ 사이의 사상은 $\cat C$의 사상 $f \colon e \to e'$으로서 다음 삼각형을 교환되게 하는 것입니다:
+
+
+\[
+ \begin{tikzcd}
+ e
+ \arrow[rd, "p"']
+ \arrow[rr, "f"]
+ && e'
+ \arrow[ld, "p'"]
+ \\
+ &c
+  \end{tikzcd}
+content:]
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{tikz-cd}
+\usepackage{hyperref}
+
+\theoremstyle{definition}
+\newtheorem{definition}{정의}[section]
+
+\title{카테고리 이론}
+\author{저자 이름}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+이 논문은 카테고리 이론(Category Theory)의 기본 개념에 대해 소개합니다. 집합과 함수에서부터 시작하여, 범주, 사상, 그리고 자연 변환에 이르기까지 설명합니다.
+\end{abstract}
+
+\section{서론}
+카테고리 이론은 현대 수학의 여러 분야에서 유용한 도구입니다. 이 이론은 수학적 구조와 이들 사이의 관계를 추상화하여 다룹니다. 
+
+\section{기본 개념}
+\subsection{범주}
+범주(category) \(\mathcal{C}\)는 다음의 데이터로 구성됩니다:
+1. 객체(object)의 모임 \(\text{Ob}(\mathcal{C})\)
+2. 각 객체 쌍 \(X, Y \in \text{Ob}(\mathcal{C})\)에 대해, \(X\)에서 \(Y\)로 가는 사상(morphism) \(f: X \rightarrow Y\)의 모임 \(\text{Hom}(X,Y)\)
+
+사상들은 다음의 두 가지 연산을 만족해야 합니다:
+1. 결합 법칙(Composition): 모든 사상 \(f: X \rightarrow Y\)와 \(g: Y \rightarrow Z\)에 대해, \(g \circ f: X \rightarrow Z\)가 정의됩니다.
+2. 항등원(Identity): 각 객체 \(X \in \text{Ob}(\mathcal{C})\)에 대해, 항등 사상(identity morphism) \(\text{id}_X: X \rightarrow X\)가 존재하여야 합니다.
+
+\subsection{함자}
+함자(functor) \(F: \mathcal{C} \rightarrow \mathcal{D}\)는 두 범주 \(\mathcal{C}\)와 \(\mathcal{D}\) 사이의 구조를 보존하는 매핑(mapping)을 제공합니다. 함자는 다음의 데이터로 이루어져 있습니다:
+1. 각 객체 \(X \in \text{Ob}(\mathcal{C})\)에 대해, \(\mathcal{D}\)의 객체 \(F(X)\)가 존재합니다.
+2. 각 사상 \(f: X \rightarrow Y\)에 대해, \(\mathcal{D}\)의 사상 \(F(f): F(X) \rightarrow F(Y)\)가 존재합니다.
+
+그리고 함자는 다음의 두 성질을 만족해야 합니다:
+1. 함자 \(F\)는 사상의 결합을 보존합니다: \(F(g \circ f) = F(g) \circ F(f)\)
+2. 함자 \(F\)는 항등 사상을 보존합니다: \(F(\text{id}_X) = \text{id}_{F(X)}\)
+
+\subsection{자연 변환}
+두 함자 \(F, G: \mathcal{C} \rightarrow \mathcal{D}\) 사이의 자연 변환(natural transformation) \(\eta\)는 각 객체 \(X \in \text{Ob}(\mathcal{C})\)에 대해, \(\mathcal{D}\)의 사상 \(\eta_X: F(X) \rightarrow G(X)\)로 구성됩니다. 이 사상들은 다음의 자연성 조건을 만족해야 합니다:
+모든 사상 \(f: X \rightarrow Y\)에 대해, \(G(f) \circ \eta_X = \eta_Y \circ F(f)\)
+
+\end{document}
+
+
+\subsection{코슬라이스 카테고리(Coslice categories)}
+
+이중적으로 \index{coslice category}코슬라이스 범주 $c / \mathcal{C}$의 개념이 있습니다. 이는 \index{under-category}언더-카테고리로도 알려져 있습니다. 이는 고정된 객체 $c$로부터 나오는 화살표들의 범주입니다. 이 범주의 객체들은 쌍 $\langle a, i \colon c \to a \rangle$입니다. $c / \mathcal{C}$의 사상들은 관련된 삼각형이 가환하도록 만드는 화살표들입니다.
+\[
+ \begin{tikzcd}
+& c
+ \arrow[rd, "j"]
+ \arrow[ld, "i"']
+ \\
+a
+\arrow[rr, "f"']
+&& b
+  \end{tikzcd}
+content:]
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{tikz-cd}
+\usepackage{hyperref}
+
+\theoremstyle{definition}
+\newtheorem{definition}{정의}[section]
+
+\title{카테고리 이론}
+\author{저자 이름}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+이 논문은 카테고리 이론(Category Theory)의 기본 개념에 대해 소개합니다. 집합과 함수에서부터 시작하여, 범주, 사상, 그리고 자연 변환에 이르기까지 설명합니다.
+\end{abstract}
+
+\section{서론}
+카테고리 이론은 현대 수학의 여러 분야에서 유용한 도구입니다. 이 이론은 수학적 구조와 이들 사이의 관계를 추상화하여 다룹니다. 
+
+\section{기본 개념}
+\subsection{범주}
+범주(category) \(\mathcal{C}\)는 다음의 데이터로 구성됩니다:
+1. 객체(object)의 모임 \(\text{Ob}(\mathcal{C})\)
+2. 각 객체 쌍 \(X, Y \in \text{Ob}(\mathcal{C})\)에 대해, \(X\)에서 \(Y\)로 가는 사상(morphism) \(f: X \rightarrow Y\)의 모임 \(\text{Hom}(X,Y)\)
+
+사상들은 다음의 두 가지 연산을 만족해야 합니다:
+1. 결합 법칙(Composition): 모든 사상 \(f: X \rightarrow Y\)와 \(g: Y \rightarrow Z\)에 대해, \(g \circ f: X \rightarrow Z\)가 정의됩니다.
+2. 항등원(Identity): 각 객체 \(X \in \text{Ob}(\mathcal{C})\)에 대해, 항등 사상(identity morphism) \(\text{id}_X: X \rightarrow X\)가 존재하여야 합니다.
+
+\subsection{함자}
+함자(functor) \(F: \mathcal{C} \rightarrow \mathcal{D}\)는 두 범주 \(\mathcal{C}\)와 \(\mathcal{D}\) 사이의 구조를 보존하는 매핑(mapping)을 제공합니다. 함자는 다음의 데이터로 이루어져 있습니다:
+1. 각 객체 \(X \in \text{Ob}(\mathcal{C})\)에 대해, \(\mathcal{D}\)의 객체 \(F(X)\)가 존재합니다.
+2. 각 사상 \(f: X \rightarrow Y\)에 대해, \(\mathcal{D}\)의 사상 \(F(f): F(X) \rightarrow F(Y)\)가 존재합니다.
+
+그리고 함자는 다음의 두 성질을 만족해야 합니다:
+1. 함자 \(F\)는 사상의 결합을 보존합니다: \(F(g \circ f) = F(g) \circ F(f)\)
+2. 함자 \(F\)는 항등 사상을 보존합니다: \(F(\text{id}_X) = \text{id}_{F(X)}\)
+
+\subsection{자연 변환}
+두 함자 \(F, G: \mathcal{C} \rightarrow \mathcal{D}\) 사이의 자연 변환(natural transformation) \(\eta\)는 각 객체 \(X \in \text{Ob}(\mathcal{C})\)에 대해, \(\mathcal{D}\)의 사상 \(\eta_X: F(X) \rightarrow G(X)\)로 구성됩니다. 이 사상들은 다음의 자연성 조건을 만족해야 합니다:
+모든 사상 \(f: X \rightarrow Y\)에 대해, \(G(f) \circ \eta_X = \eta_Y \circ F(f)\)
+
+\end{document}
+
+
+
+
+
+$1/  \mathcal{C}$의 사상들(morphisms)은 화살표 $f \colon a \to b$에 해당하며, $a$의 전역 원소들(global elements)을 $b$의 전역 원소들로 매핑합니다.
+
+ \[
+ \begin{tikzcd}
+& 1
+ \arrow[rd, "y"]
+ \arrow[ld, "x"']
+ \\
+a
+\arrow[rr, "f"']
+&& b
+  \end{tikzcd}
+content:]
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{tikz-cd}
+\usepackage{hyperref}
+
+\theoremstyle{definition}
+\newtheorem{definition}{정의}[section]
+
+\title{카테고리 이론}
+\author{저자 이름}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+이 논문은 카테고리 이론(Category Theory)의 기본 개념에 대해 소개합니다. 집합과 함수에서부터 시작하여, 범주, 사상, 그리고 자연 변환에 이르기까지 설명합니다.
+\end{abstract}
+
+\section{서론}
+카테고리 이론은 현대 수학의 여러 분야에서 유용한 도구입니다. 이 이론은 수학적 구조와 이들 사이의 관계를 추상화하여 다룹니다. 
+
+\section{기본 개념}
+\subsection{범주}
+범주(category) \(\mathcal{C}\)는 다음의 데이터로 구성됩니다:
+1. 객체(object)의 모임 \(\text{Ob}(\mathcal{C})\)
+2. 각 객체 쌍 \(X, Y \in \text{Ob}(\mathcal{C})\)에 대해, \(X\)에서 \(Y\)로 가는 사상(morphism) \(f: X \rightarrow Y\)의 모임 \(\text{Hom}(X,Y)\)
+
+사상들은 다음의 두 가지 연산을 만족해야 합니다:
+1. 결합 법칙(Composition): 모든 사상 \(f: X \rightarrow Y\)와 \(g: Y \rightarrow Z\)에 대해, \(g \circ f: X \rightarrow Z\)가 정의됩니다.
+2. 항등원(Identity): 각 객체 \(X \in \text{Ob}(\mathcal{C})\)에 대해, 항등 사상(identity morphism) \(\text{id}_X: X \rightarrow X\)가 존재하여야 합니다.
+
+\subsection{함자}
+함자(functor) \(F: \mathcal{C} \rightarrow \mathcal{D}\)는 두 범주 \(\mathcal{C}\)와 \(\mathcal{D}\) 사이의 구조를 보존하는 매핑(mapping)을 제공합니다. 함자는 다음의 데이터로 이루어져 있습니다:
+1. 각 객체 \(X \in \text{Ob}(\mathcal{C})\)에 대해, \(\mathcal{D}\)의 객체 \(F(X)\)가 존재합니다.
+2. 각 사상 \(f: X \rightarrow Y\)에 대해, \(\mathcal{D}\)의 사상 \(F(f): F(X) \rightarrow F(Y)\)가 존재합니다.
+
+그리고 함자는 다음의 두 성질을 만족해야 합니다:
+1. 함자 \(F\)는 사상의 결합을 보존합니다: \(F(g \circ f) = F(g) \circ F(f)\)
+2. 함자 \(F\)는 항등 사상을 보존합니다: \(F(\text{id}_X) = \text{id}_{F(X)}\)
+
+\subsection{자연 변환}
+두 함자 \(F, G: \mathcal{C} \rightarrow \mathcal{D}\) 사이의 자연 변환(natural transformation) \(\eta\)는 각 객체 \(X \in \text{Ob}(\mathcal{C})\)에 대해, \(\mathcal{D}\)의 사상 \(\eta_X: F(X) \rightarrow G(X)\)로 구성됩니다. 이 사상들은 다음의 자연성 조건을 만족해야 합니다:
+모든 사상 \(f: X \rightarrow Y\)에 대해, \(G(f) \circ \eta_X = \eta_Y \circ F(f)\)
+
+\end{document}
+
+
+
+\section{함수자(Functors)}
+
+
+
+
+
+
+
+비록 자연수를 인수로 취하는 함수를 메모이제이션(memoize)하는 것이 실용적이지 않다 해도; 우리는 여전히 그것들을 (무한하거나 심지어 셀 수 없을 정도로 큰) 조회 테이블(lookup tables)로 개념화할 수 있습니.
+
+
+
+다시 말해, 함수 타입(function types)은 약간의 불신을 유보해야 합니다. 함수 객체(function object)를 특정 타입에 의해 키로 설정된 조회 테이블(lookup table)로 시각화합니다. 만약 다른, 관련된 타입을 키로 사용하고 싶다면, 새로운 키를 원래 키로 변환하는 함수가 필요합니다. 이것이 함수 객체의 함자성(functoriality)이 하나의 화살표를 반대로 가지는 이유입니다:
+\begin{haskell}
+dimap :: (a' -> a) -> (b -> b') -> (a -> b) -> (a' -> b')
+dimap f g h = g . h . f
+\end{haskell}
+You are applying the transformation to a function \hask{h :: a -> b} that has a ``receptor'' that responds to values of type \hask{a}, and you want to use it to process input of type \hask{a'}. This is only possible if you have a converter from \hask{a'} to \hask{a}, namely \hask{f :: a' -> a}.
+
+함수 \hask{h :: a -> b}에 변환을 적용하고 있으며, 이 함수는 타입 \hask{a} 값을 반응하는 "수용체"를 가지고 있다. 그리고 당신은 이를 타입 \hask{a'}의 입력을 처리하는 데 사용하고자 합니다. 이는 오직 \hask{a'}로부터 \hask{a}로 변환하는 변환기 \hask{f :: a' -> a}를 가지고 있을 때만 가능합니다.
+
+
+
+
+
+
+\subsection{함자(Functor) 사이의 사상}
+
+
+사실, 카테고리 \emph{사이의} 매핑을 상상하는 것이 더 쉽습니다. 원본 카테고리의 모든 객체는 대상 카테고리의 객체에 매핑됩니다. 만약 $a$가 $\mathcal{C}$의 객체라면, 이에 상응하는 객체 $F a$가 $\mathcal{D}$에 있습니다.
+
+
+\[ f \colon a \to b\]
+첫 번째 카테고리(category)에는 두 번째 카테고리(category)에서 대응되는 화살표(arrow)가 있습니다.
+\[ F f \colon F a \to F b\]
+
+
+\[
+ \begin{tikzcd}
+ a 
+ \arrow[d, blue, "f"]
+\arrow[rr, dashed]
+ && F a
+  \arrow[d, red, "F f"]
+ \\
+ b 
+ \arrow[rr, dashed]
+&& F b
+  \end{tikzcd}
+content:]
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{tikz-cd}
+\usepackage{hyperref}
+
+\theoremstyle{definition}
+\newtheorem{definition}{정의}[section]
+
+\title{카테고리 이론}
+\author{저자 이름}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+이 논문은 카테고리 이론(Category Theory)의 기본 개념에 대해 소개합니다. 집합과 함수에서부터 시작하여, 범주, 사상, 그리고 자연 변환에 이르기까지 설명합니다.
+\end{abstract}
+
+\section{서론}
+카테고리 이론은 현대 수학의 여러 분야에서 유용한 도구입니다. 이 이론은 수학적 구조와 이들 사이의 관계를 추상화하여 다룹니다. 
+
+\section{기본 개념}
+\subsection{범주}
+범주(category) \(\mathcal{C}\)는 다음의 데이터로 구성됩니다:
+1. 객체(object)의 모임 \(\text{Ob}(\mathcal{C})\)
+2. 각 객체 쌍 \(X, Y \in \text{Ob}(\mathcal{C})\)에 대해, \(X\)에서 \(Y\)로 가는 사상(morphism) \(f: X \rightarrow Y\)의 모임 \(\text{Hom}(X,Y)\)
+
+사상들은 다음의 두 가지 연산을 만족해야 합니다:
+1. 결합 법칙(Composition): 모든 사상 \(f: X \rightarrow Y\)와 \(g: Y \rightarrow Z\)에 대해, \(g \circ f: X \rightarrow Z\)가 정의됩니다.
+2. 항등원(Identity): 각 객체 \(X \in \text{Ob}(\mathcal{C})\)에 대해, 항등 사상(identity morphism) \(\text{id}_X: X \rightarrow X\)가 존재하여야 합니다.
+
+\subsection{함자}
+함자(functor) \(F: \mathcal{C} \rightarrow \mathcal{D}\)는 두 범주 \(\mathcal{C}\)와 \(\mathcal{D}\) 사이의 구조를 보존하는 매핑(mapping)을 제공합니다. 함자는 다음의 데이터로 이루어져 있습니다:
+1. 각 객체 \(X \in \text{Ob}(\mathcal{C})\)에 대해, \(\mathcal{D}\)의 객체 \(F(X)\)가 존재합니다.
+2. 각 사상 \(f: X \rightarrow Y\)에 대해, \(\mathcal{D}\)의 사상 \(F(f): F(X) \rightarrow F(Y)\)가 존재합니다.
+
+그리고 함자는 다음의 두 성질을 만족해야 합니다:
+1. 함자 \(F\)는 사상의 결합을 보존합니다: \(F(g \circ f) = F(g) \circ F(f)\)
+2. 함자 \(F\)는 항등 사상을 보존합니다: \(F(\text{id}_X) = \text{id}_{F(X)}\)
+
+\subsection{자연 변환}
+두 함자 \(F, G: \mathcal{C} \rightarrow \mathcal{D}\) 사이의 자연 변환(natural transformation) \(\eta\)는 각 객체 \(X \in \text{Ob}(\mathcal{C})\)에 대해, \(\mathcal{D}\)의 사상 \(\eta_X: F(X) \rightarrow G(X)\)로 구성됩니다. 이 사상들은 다음의 자연성 조건을 만족해야 합니다:
+모든 사상 \(f: X \rightarrow Y\)에 대해, \(G(f) \circ \eta_X = \eta_Y \circ F(f)\)
+
+\end{document}
+
+
+
+
+
+한 범주의 구조는 화살(화살표)과 그들의 합성으로 정의되니다. 따라서 펑터(functer)는 합성을 보존해야 합니다. 한 범주에서 합성된 것은:
+\[ h = g \circ f \]
+두 번째 카테고리에서 구성되어야 합니다:
+\[ F h = F (g \circ f) = F g \circ F f \]
+우리는 $\mathcal{C}$에서 두 화살표를 합성한 후 $\mathcal{D}$로 매핑할 수 있으며, 또는 개별 화살표를 매핑한 후 $\mathcal{D}$에서 합성할 수 있습니다. 우리는 그 결과가 동일하도록 요구합니다.
+\[
+ \begin{tikzcd}
+ a 
+ \arrow[d, "f"]
+\arrow[rrr, dashed]
+\arrow[dd, bend right = 70, blue, "g \circ f"']
+ &&& F a
+  \arrow[d, "F f"]
+  \arrow[dd, bend left = 70, "F g \circ F f"]
+  \arrow[dd, bend right = 70, red, "F (g \circ f)"']
+ \\
+ b 
+ \arrow[d, "g"]
+&&& F b
+ \arrow[d, "F g"]
+ \\
+ c
+ \arrow[rrr, dashed]
+&&& F c
+  \end{tikzcd}
+content:]
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{tikz-cd}
+\usepackage{hyperref}
+
+\theoremstyle{definition}
+\newtheorem{definition}{정의}[section]
+
+\title{카테고리 이론}
+\author{저자 이름}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+이 논문은 카테고리 이론(Category Theory)의 기본 개념에 대해 소개합니다. 집합과 함수에서부터 시작하여, 범주, 사상, 그리고 자연 변환에 이르기까지 설명합니다.
+\end{abstract}
+
+\section{서론}
+카테고리 이론은 현대 수학의 여러 분야에서 유용한 도구입니다. 이 이론은 수학적 구조와 이들 사이의 관계를 추상화하여 다룹니다. 
+
+\section{기본 개념}
+\subsection{범주}
+범주(category) \(\mathcal{C}\)는 다음의 데이터로 구성됩니다:
+1. 객체(object)의 모임 \(\text{Ob}(\mathcal{C})\)
+2. 각 객체 쌍 \(X, Y \in \text{Ob}(\mathcal{C})\)에 대해, \(X\)에서 \(Y\)로 가는 사상(morphism) \(f: X \rightarrow Y\)의 모임 \(\text{Hom}(X,Y)\)
+
+사상들은 다음의 두 가지 연산을 만족해야 합니다:
+1. 결합 법칙(Composition): 모든 사상 \(f: X \rightarrow Y\)와 \(g: Y \rightarrow Z\)에 대해, \(g \circ f: X \rightarrow Z\)가 정의됩니다.
+2. 항등원(Identity): 각 객체 \(X \in \text{Ob}(\mathcal{C})\)에 대해, 항등 사상(identity morphism) \(\text{id}_X: X \rightarrow X\)가 존재하여야 합니다.
+
+\subsection{함자}
+함자(functor) \(F: \mathcal{C} \rightarrow \mathcal{D}\)는 두 범주 \(\mathcal{C}\)와 \(\mathcal{D}\) 사이의 구조를 보존하는 매핑(mapping)을 제공합니다. 함자는 다음의 데이터로 이루어져 있습니다:
+1. 각 객체 \(X \in \text{Ob}(\mathcal{C})\)에 대해, \(\mathcal{D}\)의 객체 \(F(X)\)가 존재합니다.
+2. 각 사상 \(f: X \rightarrow Y\)에 대해, \(\mathcal{D}\)의 사상 \(F(f): F(X) \rightarrow F(Y)\)가 존재합니다.
+
+그리고 함자는 다음의 두 성질을 만족해야 합니다:
+1. 함자 \(F\)는 사상의 결합을 보존합니다: \(F(g \circ f) = F(g) \circ F(f)\)
+2. 함자 \(F\)는 항등 사상을 보존합니다: \(F(\text{id}_X) = \text{id}_{F(X)}\)
+
+\subsection{자연 변환}
+두 함자 \(F, G: \mathcal{C} \rightarrow \mathcal{D}\) 사이의 자연 변환(natural transformation) \(\eta\)는 각 객체 \(X \in \text{Ob}(\mathcal{C})\)에 대해, \(\mathcal{D}\)의 사상 \(\eta_X: F(X) \rightarrow G(X)\)로 구성됩니다. 이 사상들은 다음의 자연성 조건을 만족해야 합니다:
+모든 사상 \(f: X \rightarrow Y\)에 대해, \(G(f) \circ \eta_X = \eta_Y \circ F(f)\)
+
+\end{document}
+
+
+마지막으로, 함자(펑터, functor)는 항등 화살(아이덴티티 애로우, identity arrows)를 보존해야 합니다:
+\[ F\, id_a = id_{F a} \]
+
+\[
+ \begin{tikzcd}
+ a 
+  \arrow[loop, blue,  "id_a"']
+\arrow[rr, dashed]
+ && F a
+  \arrow[loop, red, "F \, id_{a}"']
+  \arrow[loop, controls={+(2.5, 2.6) and +(-2, 2.5)}, "id_{F a}"']
+  \end{tikzcd}
+content:]
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{tikz-cd}
+\usepackage{hyperref}
+
+\theoremstyle{definition}
+\newtheorem{definition}{정의}[section]
+
+\title{카테고리 이론}
+\author{저자 이름}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+이 논문은 카테고리 이론(Category Theory)의 기본 개념에 대해 소개합니다. 집합과 함수에서부터 시작하여, 범주, 사상, 그리고 자연 변환에 이르기까지 설명합니다.
+\end{abstract}
+
+\section{서론}
+카테고리 이론은 현대 수학의 여러 분야에서 유용한 도구입니다. 이 이론은 수학적 구조와 이들 사이의 관계를 추상화하여 다룹니다. 
+
+\section{기본 개념}
+\subsection{범주}
+범주(category) \(\mathcal{C}\)는 다음의 데이터로 구성됩니다:
+1. 객체(object)의 모임 \(\text{Ob}(\mathcal{C})\)
+2. 각 객체 쌍 \(X, Y \in \text{Ob}(\mathcal{C})\)에 대해, \(X\)에서 \(Y\)로 가는 사상(morphism) \(f: X \rightarrow Y\)의 모임 \(\text{Hom}(X,Y)\)
+
+사상들은 다음의 두 가지 연산을 만족해야 합니다:
+1. 결합 법칙(Composition): 모든 사상 \(f: X \rightarrow Y\)와 \(g: Y \rightarrow Z\)에 대해, \(g \circ f: X \rightarrow Z\)가 정의됩니다.
+2. 항등원(Identity): 각 객체 \(X \in \text{Ob}(\mathcal{C})\)에 대해, 항등 사상(identity morphism) \(\text{id}_X: X \rightarrow X\)가 존재하여야 합니다.
+
+\subsection{함자}
+함자(functor) \(F: \mathcal{C} \rightarrow \mathcal{D}\)는 두 범주 \(\mathcal{C}\)와 \(\mathcal{D}\) 사이의 구조를 보존하는 매핑(mapping)을 제공합니다. 함자는 다음의 데이터로 이루어져 있습니다:
+1. 각 객체 \(X \in \text{Ob}(\mathcal{C})\)에 대해, \(\mathcal{D}\)의 객체 \(F(X)\)가 존재합니다.
+2. 각 사상 \(f: X \rightarrow Y\)에 대해, \(\mathcal{D}\)의 사상 \(F(f): F(X) \rightarrow F(Y)\)가 존재합니다.
+
+그리고 함자는 다음의 두 성질을 만족해야 합니다:
+1. 함자 \(F\)는 사상의 결합을 보존합니다: \(F(g \circ f) = F(g) \circ F(f)\)
+2. 함자 \(F\)는 항등 사상을 보존합니다: \(F(\text{id}_X) = \text{id}_{F(X)}\)
+
+\subsection{자연 변환}
+두 함자 \(F, G: \mathcal{C} \rightarrow \mathcal{D}\) 사이의 자연 변환(natural transformation) \(\eta\)는 각 객체 \(X \in \text{Ob}(\mathcal{C})\)에 대해, \(\mathcal{D}\)의 사상 \(\eta_X: F(X) \rightarrow G(X)\)로 구성됩니다. 이 사상들은 다음의 자연성 조건을 만족해야 합니다:
+모든 사상 \(f: X \rightarrow Y\)에 대해, \(G(f) \circ \eta_X = \eta_Y \circ F(f)\)
+
+\end{document}
+
+
+이 조건들을 함께 취하면 함자(functor)가 범주의 구조를 보존한다는 것이 무엇을 의미하는지 정의합니다.
+
+
+
+극단적으로, 모든 범주는 하나의 객체(object)와 하나의 화살표(arrow)로 구성된 단일 요소 범주(singleton category)에 매핑될 수 있습니다.
+
+또한, 모든 대상(객체, object) 또는 사상(화살표, arrows)이 대상 범주(target category)에서 함자(functor)에 의해 커버될 필요는 없습니니다. 극단적으로, 우리는 단일 집합 범주(singleton category)에서 어떤(비어있지 않은, non-empty) 범주로의 함자를 가질 수 있습니니다. 이러한 함자는 하나의 대상(객체)과 그것의 항등 사상(identity arrow)를 선택합니니다.
+
+A \index{constant functor}\emph{상수 함자}(constant functor) $\Delta_c$는 원천 범주에서 모든 대상을 목표 범주의 단일 대상 $c$로, 원천 범주의 모든 화살을 목표 범주의 단일 항등 화살 $id_c$로 사상하는 함자의 예입니다.
+
+범주 이론에서, 함수자(functors)는 한 범주의 모델을 다른 범주 안에 만드는 데 자주 사용됩니다. 함수자가 여러 객체와 화살표를 하나로 병합할 수 있다는 사실은 그들이 원천 범주의 단순화된 뷰를 생성한다는 것을 의미합니다. 그들은 원천 범주의 일부 측면을 ``추상화''합니다.
+
+그들이 목표 범주(target category)의 일부만을 다룰 수 있다는 사실은 모델들이 더 큰 환경에 내재되어 있음을 의미합니다.
+
+어떤 최소한의 스틱 피규어(stick-figure) 범주로부터의 함자(Functors)는 더 큰 범주에서 패턴을 정의하는 데 사용될 수 있습니다.
+
+\begin{exercise}
+Describe a functor whose source is the \index{walking arrow}``walking arrow'' category. It's a stick-figure category with two objects and a single arrow between them (plus the mandatory identity arrows).
+\[
+ \begin{tikzcd}
+ a 
+  \arrow[loop,  "id_{a}"']
+\arrow[r, "f"]
+ & b
+  \arrow[loop, "id_{b}"']
+  \end{tikzcd}
+content:]
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{tikz-cd}
+\usepackage{hyperref}
+
+\theoremstyle{definition}
+\newtheorem{definition}{정의}[section]
+
+\title{카테고리 이론}
+\author{저자 이름}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+이 논문은 카테고리 이론(Category Theory)의 기본 개념에 대해 소개합니다. 집합과 함수에서부터 시작하여, 범주, 사상, 그리고 자연 변환에 이르기까지 설명합니다.
+\end{abstract}
+
+\section{서론}
+카테고리 이론은 현대 수학의 여러 분야에서 유용한 도구입니다. 이 이론은 수학적 구조와 이들 사이의 관계를 추상화하여 다룹니다. 
+
+\section{기본 개념}
+\subsection{범주}
+범주(category) \(\mathcal{C}\)는 다음의 데이터로 구성됩니다:
+1. 객체(object)의 모임 \(\text{Ob}(\mathcal{C})\)
+2. 각 객체 쌍 \(X, Y \in \text{Ob}(\mathcal{C})\)에 대해, \(X\)에서 \(Y\)로 가는 사상(morphism) \(f: X \rightarrow Y\)의 모임 \(\text{Hom}(X,Y)\)
+
+사상들은 다음의 두 가지 연산을 만족해야 합니다:
+1. 결합 법칙(Composition): 모든 사상 \(f: X \rightarrow Y\)와 \(g: Y \rightarrow Z\)에 대해, \(g \circ f: X \rightarrow Z\)가 정의됩니다.
+2. 항등원(Identity): 각 객체 \(X \in \text{Ob}(\mathcal{C})\)에 대해, 항등 사상(identity morphism) \(\text{id}_X: X \rightarrow X\)가 존재하여야 합니다.
+
+\subsection{함자}
+함자(functor) \(F: \mathcal{C} \rightarrow \mathcal{D}\)는 두 범주 \(\mathcal{C}\)와 \(\mathcal{D}\) 사이의 구조를 보존하는 매핑(mapping)을 제공합니다. 함자는 다음의 데이터로 이루어져 있습니다:
+1. 각 객체 \(X \in \text{Ob}(\mathcal{C})\)에 대해, \(\mathcal{D}\)의 객체 \(F(X)\)가 존재합니다.
+2. 각 사상 \(f: X \rightarrow Y\)에 대해, \(\mathcal{D}\)의 사상 \(F(f): F(X) \rightarrow F(Y)\)가 존재합니다.
+
+그리고 함자는 다음의 두 성질을 만족해야 합니다:
+1. 함자 \(F\)는 사상의 결합을 보존합니다: \(F(g \circ f) = F(g) \circ F(f)\)
+2. 함자 \(F\)는 항등 사상을 보존합니다: \(F(\text{id}_X) = \text{id}_{F(X)}\)
+
+\subsection{자연 변환}
+두 함자 \(F, G: \mathcal{C} \rightarrow \mathcal{D}\) 사이의 자연 변환(natural transformation) \(\eta\)는 각 객체 \(X \in \text{Ob}(\mathcal{C})\)에 대해, \(\mathcal{D}\)의 사상 \(\eta_X: F(X) \rightarrow G(X)\)로 구성됩니다. 이 사상들은 다음의 자연성 조건을 만족해야 합니다:
+모든 사상 \(f: X \rightarrow Y\)에 대해, \(G(f) \circ \eta_X = \eta_Y \circ F(f)\)
+
+\end{document}
+
+\end{연습문제}
+\begin{exercise}
+The ``walking iso'' category is just like the ``walking arrow'' category, plus one more arrow going back from $b$ to $a$. Show that a functor from this category always picks an isomorphism in the target category. 
+\end{연습문제}
+
+\section{프로그래밍에서의 펑터}
+
+
+
+\subsection{엔도펑터(Endofunctors)}
+
+
+목록 타입 생성자, \hask{List},는 임의의 타입 \hask{a}를 타입 \hask{List a}로 매핑합니다.
+
+\hask{Maybe} 타입 생성자는 \hask{a}를 \hask{Maybe a}로 맵핑합니다.
+
+Endofunctor의 두 번째 부분은 사상(mapping)입니다. 함수 \hask{a -> b}가 주어졌을 때, 우리는 \hask{List a -> List b} 또는 \hask{Maybe a -> Maybe b}를 정의할 수 있어야 합니다. 이것이 우리가 전에 논의했던 이 데이터 타입들의 ``함수자성(functoriality)'' 속성입니다. 함수자성은 임의의 함수를 변형된 타입들 사이의 함수로 \index{lifting}\emph{승격(lift)}할 수 있게 해줍니다.
+
+Functoriality는 \index{\hask{class}}\emph{타입클래스(typeclass)}를 사용하여 Haskell에서 표현될 수 있습니다. 이 경우, 타입클래스는 타입 생성자(type constructor) \hask{f}에 의해 매개변수화(parameterized) 됩니다 (Haskell에서는 타입 생성자 변수의 이름으로 소문자를 사용합니다). 우리는 \hask{f}가 \hask{Functor}라고 말합니다, 만약 \hask{f}에 해당하는 함수 매핑(mappings of functions)인 \hask{fmap}이 있다면:
+\begin{haskell}
+class Functor f where
+  fmap :: (a -> b) -> (f a -> f b)
+\end{haskell}
+컴파일러는 \hask{f}가 타입 생성자(type constructor)임을 알고 있습니다. 왜냐하면 이것이 타입들에 적용되기 때문입니다. 예를 들어 \hask{f a}와 \hask{f b}에서처럼 말입니다.
+
+특정 타입 생성자가 \hask{Functor}임을 컴파일러에 증명하기 위해 우리는 해당 생성자에 대한 \hask{fmap}의 구현을 제공해야 합니다. 이는 \index{\hask{instance}}\emph{인스턴스(instance)}를 타입클래스(typeclass) \hask{Functor}의 인스턴스로 정의함으로써 이루어집니다. 예를 들어:
+\begin{haskell}
+instance Functor Maybe where
+  fmap g Nothing  = Nothing
+  fmap g (Just a) = Just (g a)
+\end{haskell}
+
+함자(Functor)는 몇 가지 법칙을 만족해야 합니다: 함자는 합성과 항등을 보존해야 합니다. 이러한 법칙들은 Haskell에 표현될 수 없지만, 프로그래머에 의해 확인되어야 합니다. 우리는 이전에 항등 법칙을 만족하지 않지만 컴파일러에 의해 받아들여질 수 있는 \hask{badMap}의 정의를 보았습니다. 이는 리스트 타입 생성자 \hask{[]}에 대한 ``불법적인'' \hask{Functor} 인스턴스를 정의할 것입니다.
+
+\begin{exercise}
+Show that \hask{WithInt} is a functor
+\begin{haskell}
+data WithInt a = WithInt a Int
+\end{haskell}
+\end{연습문제}
+
+
+
+
+\begin{haskell}
+data Id a = Id a
+\end{haskell}
+\begin{exercise}
+Show that \hask{Id} is a \hask{Functor}. Hint: implement the \hask{Functor} instance for it.
+\end{연습문제}
+
+
+우리는 또한 모든 객체를 단일 객체 $c$로 매핑하고, 모든 화살표를 이 객체에 대한 항등 화살표로 매핑하는 상수 함자 $\Delta_c$를 가지고 있습니
+다. Haskell에서는, 이는 대상 객체 \hask{c}에 의해 매개변수화된 함자들의 모음입니다:
+\begin{haskell}
+data Const c a = Const c
+\end{haskell}
+이 타입 생성자는 두 번째 인수를 무시합니다.
+
+
+\begin{exercise}
+Show that \hask{(Const c)} is a \hask{Functor}. Hint: The type constructor takes two arguments, but here it's partially applied to the first argument. It is functorial in the second argument.
+\end{연습문제}
+
+
+\subsection{이항자(Bifunctors)}
+
+우리 또한 두 타입을 인자로 받는 데이터 생성자를 보았습니다: 곱(product)과 합(sum)입니다. 이것들은 역시 함수자적(functorial)인 특성을 지니고 있었지만, 단일 함수를 올리는 대신 함수 쌍을 올렸습니다. 범주 이론(category theory)에서는, 이를 곱 범주(product category) $\mathcal{C} \times \mathcal{C}$ 에서 $\mathcal{C}$로 가는 함수자(functors)로 정의합니다.
+
+
+
+Haskell에서는 이러한 펑터(functor)들을 \hask{Bifunctor}라는 별도의 클래스의 멤버로 취급합니다.
+
+\begin{haskell}
+class Bifunctor f where
+  bimap :: (a -> a') -> (b -> b') -> (f a b -> f a' b')
+\end{haskell}
+다시 한 번, 컴파일러는 \hask{f}가 두 개의 인자를 가지는 타입 생성자(type constructor)라는 것을 추론합니다. 왜냐하면 그것이 두 개의 타입에 적용되는 것을 보기 때문입니다, 예를 들어 \hask{f a b}.
+
+컴파일러에게 특정 타입 생성자가 \hask{Bifunctor}임을 증명하기 위해 인스턴스를 정의합니다. 예를 들어, 쌍(pair)의 이항 함자성(bifunctoriality)은 다음과 같이 정의될 수 있습니다:
+\begin{haskell}
+instance Bifunctor (,) where
+  bimap g h (a, b) = (g a, h b)
+\end{haskell}
+
+\begin{exercise}
+Show that \hask{MoreThanA} is a bifunctor.
+\begin{haskell}
+data MoreThanA a b = More a (Maybe b)
+\end{haskell}
+\end{연습문제}
+
+
+\subsection{반변 함자(Contravariant functors)}
+
+반대 범주 $\mathcal{C}^{op}$에서 오는 함자들을 \emph{반변 함수자}(contravariant)라고 합니다. 이들은 반대 방향으로 가는 사상을 들어올리는 특성을 갖고 있습니다. 일반적인 함자들은 때때로 \index{covariant functor}\emph{공변 함수자}(covariant)라고 합니다.
+
+In Haskell, contravariant functors form the typeclass \hask{Contravariant}:
+\begin{haskell}
+class Contravariant f where
+  contramap :: (b -> a) -> (f a -> f b)
+\end{haskell}
+
+
+
+예제: 술어(predicate)는 \hask{True} 또는 \hask{False}를 반환하는 함수입니다.
+\begin{haskell}
+data Predicate a = Predicate (a -> Bool)
+\end{haskell}
+이것이 반변함자(contravariant functor)라는 것을 쉽게 알 수 있습니니다:
+\begin{haskell}
+instance Contravariant Predicate where
+  contramap f (Predicate h) = Predicate (h . f)
+\end{haskell}
+
+
+
+
+
+다음 데이터 타입을 고려하십시오:
+\begin{haskell}
+data Tester a = Tester ((a -> Bool) -> Bool)
+\end{haskell}
+이것은 이중 부정(double-negative) 속에서 \hask{a}를 가지고 있으므로, 긍정적 위치에 있습니다. 이것이 바로 공변(covariant) \hask{펑터(Functor)}인 이유입니다. 이것은 \hask{a}'s를 만들어내는 것입니다:
+
+\begin{haskell}
+instance Functor Tester where
+  fmap f (Tester g) = Tester g'
+    where g' h = g (h . f)
+\end{haskell}
+
+여기서 괄호가 중요함을 주목하십시오. 유사한 함수 \hask{a -> Bool -> Bool}는 \hask{a}를 \emph{negative} 위치에 두었습니다. 이는 \hask{a}의 함수가 \hask{(Bool -> Bool)}의 함수를 반환하기 때문입니다. 동등하게, 이를 언커리(uncurry)하여 쌍을 받는 함수: \hask{(a, Bool) -> Bool}로 만들 수 있습니다. 어느 쪽이든, \hask{a}는 결국 negative 위치에 있습니다.
+
+\subsection{Profunctors}
+\subsection{프로펑터들(Profunctors)}
+
+
+
+범주 이론(category theory)에서는 이는 두 개의 범주의 곱(product)에서 하나가 반대 범주(opposite category)인 함자(functor)에 해당합니다: 이는 $\mathcal{C}^{op} \times \mathcal{C}$에서의 함자입니다. $\mathcal{C}^{op} \times \mathcal{C}$에서 $\mathbf{Set}$로 가는 함자를 \emph{프로펑터(profunctors)}라고 부릅니다.
+
+Haskell에서, 프로펑터(profunctors)는 타입클래스(typeclass)를 형성합니다:
+\begin{haskell}
+class Profunctor f where
+  dimap :: (a' -> a) -> (b -> b') -> (f a b -> f a' b')
+\end{haskell}
+
+프로펀터(profunctor)를 동시에 생산자(producer)와 소비자(consumer)인 타입(type)으로 생각할 수 있습니다. 이는 하나의 타입을 소비하고 다른 타입을 생산합니다.
+
+함수 타입은, 중위 연산자 \hask{(->)}로 쓸 수 있는데, 이는 \hask{Profunctor}의 인스턴스입니다.
+\begin{haskell}
+instance Profunctor (->) where
+  dimap f g h = g . h . f
+\end{haskell}
+이는 함수 \hask{a->b}가 \hask{a} 타입의 인수를 받아들이고 \hask{b} 타입의 결과를 생성한다는 우리의 직관과 일치합니다.
+
+
+
+\section{Hom-함수자(Hom-Functor)}
+
+어떤 두 객체 간의 화살표들은 하나의 집합을 이룹니다. 이 집합을 hom-집합(hom-set)이라고 부르며, 보통 범주의 이름과 객체들의 이름을 사용하여 작성합니다:
+\[ \mathcal{C}(a, b) \]
+
+
+
+또 다른 방법으로 hom-sets(사상 집합)을 바라보면 그것들이 객체의 모든 쌍에게 집합 $\mathcal{C}(a, b)$를 할당하는 사상을 정의한다고 말할 수 있습니니다. 집합들 자체는 범주 $\mathbf{Set}$ 내의 객체들입니다. 따라서 우리는 범주들 사이의 사상을 가집니다.
+
+
+
+
+
+즉, 쌍 $\langle a, b \rangle$를 집합 $\mathcal{C}(a, b)$로 매핑(mapping)하는 것은 \emph{프로펀터(profunctor)}입니다:
+\[ \mathcal{C}^{op} \times \mathcal{C} \to \mathbf{Set} \]
+
+자주 우리는 한 개체만을 변경하면서 다른 하나는 고정시키는 것에 관심을 가집니다. 소스 객체를 고정시키고 타겟을 변경할 때, 그 결과는 다음과 같이 작성되는 함자(functor)입니다:
+\[ \mathcal{C}(a, -) \colon \mathcal{C} \to \mathbf{Set} \]
+이 함자의 화살표 $g \colon b \to b'$에 대한 작용은 다음과 같이 씁니다:
+\[ \mathcal{C}(a, g) \colon \mathcal{C}(a, b) \to \mathcal{C}(a, b') \]
+그리고 이는 후합성과( post-composition )에 의해 제공됩니다:
+\[\mathcal{C}(a, g) = (g \circ -) \]
+
+$b$를 변화시키는 것은 하나의 객체에서 다른 객체로 초점을 전환하는 것을 의미하므로, 완비 함자(complete functor) $\mathcal{C}(a, -)$는 $a$에서 발생하는 모든 화살표를 $a$의 관점에서 범주를 일관된 시각으로 결합시켜 줍니다. 이는 ``$a$에 따른 세계''입니다.
+
+반대로, 타겟(target)을 고정하고 hom-함자(hom-functor)의 소스(source)를 변화시키면, 우리는 반공변 함자(contravariant functor)를 얻게 됩니다:
+\[ \mathcal{C}(-, b) \colon \mathcal{C}^{op} \to \mathbf{Set} \]
+그 화살표 $g' \colon a' \to a$에 대한 작용은 다음과 같이 작성됩니다:
+\[ \mathcal{C}(g', b) \colon \mathcal{C}(a, b) \to \mathcal{C}(a', b) \]
+그리고 전치성합성(pre-composition)에 의해 주어집니다:
+\[\mathcal{C}(g', b) = (- \circ g') \]
+
+함자(Functor) $\mathcal{C}(-, b)$는 $b$를 향하는 모든 화살표를 하나의 일관된 관점으로 조직합니다. 이는 $b$가 ``세상으로부터 보는 모습''입니다.
+
+이제 동형사상(이소몰피즘)에 관한 챕터의 결과를 재구성할 수 있습니 다. 두 객체 $a$와 $b$가 동형사상이라면 그들의 hom-집합 또한 동형사상 입니다. 특히:
+\[\mathcal{C}(a, x) \cong \mathcal{C}(b, x)\]
+
+\[\mathcal{C}(x, a) \cong \mathcal{C}(x, b)\]
+다음 장에서 자연성 조건(naturality conditions)에 대해 논의할 것입니다.
+
+
+
+반대로, 반변 함수자 $\cat C (-, a)$는 질문에 답합니다: ``나는 $a$와 연결되어 있습니까?''
+
+
+
+\section{함자 합성(Functor Composition)}
+
+함수들을 합성할 수 있는 것처럼, 함자(functor)들도 합성할 수 있습니 다. 두 함자(functor)는 하나의 목표 범주(target category)가 다른 하나의 원천 범주(source category)와 동일할 때 합성 가능합니 다.
+
+
+ 
+
+ 
+
+ \begin{haskell}
+data Compose g f a = Compose (g (f a))
+\end{haskell}
+컴파일러는 \hask{f}와 \hask{g}가 타입 생성자(type constructors)여야 한다는 것을 알아냅니다. \hask{f}는 타입 매개변수(type parameter) \hask{a}에 적용되고, \hask{g}는 그 결과 타입에 적용됩니다.
+
+Alternatively, you can tell the compiler that the first two arguments to \hask{Compose} are type constructors. You do this by providing a \index{kind signatures}\emph{kind signature}(종류 서명), which requires a language extension \hask{KindSignatures}(종류 서명들) that you put at the top of the source file:
+\begin{haskell}
+{-# language KindSignatures #-}
+\end{haskell}
+\hask{Type}을 정의하는 \hask{Data.Kind} 라이브러리도 임포트해야 합니다:
+\begin{haskell}
+import Data.Kind
+\end{haskell}
+
+
+
+
+
+\hask{Compose}는 두 타입 생성자(type constructors)를 받아 하나의 타입 생성자를 생성하므로, 이는 다음과 같은 형태 서명을 가집니다:
+\begin{haskell}
+(Type -> Type) -> (Type -> Type) -> (Type -> Type) 
+\end{haskell}
+그리고 전체 정의는:
+\begin{haskell}
+data Compose :: (Type -> Type) -> (Type -> Type) -> (Type -> Type) 
+  where
+    Compose :: (g (f a)) -> Compose g f a
+\end{haskell}
+
+
+
+그러나, 타입 생성자(type constructors)의 합성을 사용하여 함수를 올리려면, \hask{f} 이후 \hask{g}가, 이들은 반드시 함자(functors)여야 합니다. 이 요구 사항은 인스턴스 선언(instance declaration)에서 제약으로 인코딩됩니다:
+\begin{haskell}
+instance (Functor g, Functor f) => Functor (Compose g f) where
+  fmap h (Compose gfa) = Compose (fmap (fmap h) gfa)
+\end{haskell}
+
+
+
+
+
+
+
+
+\begin{exercise}
+Define a composition of a \hask{Functor} after \hask{Contravariant}. Hint: You can reuse \hask{Compose}, but you have to provide a different instance declaration.
+\end{연습문제}
+
+
+\subsection{카테고리들의 카테고리(Category of categories)}
+
+
+
+And this is where mathematicians start worrying about ``size'' issues. It's a shorthand for saying that there are paradoxes lurking around. So the correct incantation is that $\mathbf{Cat}$ is a category of \emph{small} categories. But as long as we are not engaged in proofs of existence, we can ignore size problems.
+그리고 여기서 수학자들은 ``크기'' 문제에 대해 걱정하기 시작합니다. 이것은 역설이 숨어 있다는 것을 말하는 약칭입니다. 그래서 올바른 표현은 $\mathbf{Cat}$이 \emph{작은} 범주의 범주라는 것입니다. 그러나 우리가 존재 증명에 관여하지 않는 한, 크기 문제를 무시할 수 있습니다.
+
+\end{document}

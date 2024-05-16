@@ -15,3 +15,5 @@ DaoFP.ilg
 
 node_modules
 .env
+in.txt
+out.txt
