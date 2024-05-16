@@ -1,5 +1,5 @@
 export const prompt = (_: TemplateStringsArray, ...params: string[]) => `
-"content:" 이후에 전달하는 문장들은 카테고리 이론에 관한 latex 파일들의 일부야.
+"내용:" 이후에 전달하는 문장들은 카테고리 이론에 관한 latex 파일들의 일부야.
 원본 latex 파일의 라인별로 쪼개진 내용들이라 온전치 않을 수 있지만 이를 감안해 줘.
 이를 원래의 포맷을 존중하면서 내용만 한글로 번역해 줘. 
 다른 부가적인 말은 하지 말고 원본 텍스트의 내용만 답해줘. 
@@ -8,4 +8,5 @@ export const prompt = (_: TemplateStringsArray, ...params: string[]) => `
 무조건 원본의 포맷을 가장 중요시 해줘.
 별도의 latex 블록을 만들지 말아줘.
 괄호의 쌍을 맞춰줘.
-content:${params[0]}`;
+대답에 '내용:' 을 붙이지 말아줘.
+내용:${params[0]}`;

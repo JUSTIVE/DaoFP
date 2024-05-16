@@ -29,10 +29,7 @@ export const translate = async (content: string) => {
     "./out.txt" ?? "",
     response.choices[0]?.message.content ?? "",
   );
-
   console.log("done");
-  // console.log(response.choices[0].message.content);
-  // return response.choices[0].message.content;
 };
 
 try {

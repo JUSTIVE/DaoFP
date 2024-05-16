@@ -33,7 +33,6 @@ export function extract(fileContent: string): string {
     filterPrefix,
     removeBeginEnd,
     removeClosingBracket,
-    // filterTexTag,
     filterMultilineTex,
     removeEmptyLines,
   );

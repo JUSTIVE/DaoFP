@@ -1,90 +1,34 @@
 import { argv } from "bun";
 import { getChapter, readFile, writeFile } from "./utils";
 import { extract } from "./extract";
-import { A, D, F, pipe, S } from "@mobily/ts-belt";
-import { translate } from "./translate";
-import { setTimeout } from "node:timers/promises";
+import { A, F, pipe, S } from "@mobily/ts-belt";
+import { getTranslatedMap } from "./translate";
 import chalk from "chalk";
-import * as fs from "node:fs";
 import { build } from "./build";
 import { execSync } from "node:child_process";
 import path from "node:path";
 
+//번역 입력 파일 이름
 const fileOfChapter = getChapter(argv[2] ?? "");
-console.log(fileOfChapter);
+//번역 입력 파일 경로
 const inPath = `./content/${fileOfChapter}`;
+//번역 결과 파일 경로
 const outPath = `./kr/${fileOfChapter}`;
+//번역 캐시 맵 파일 경로
 const cachedMapFile = `./kr/${fileOfChapter}.json`;
-
+//번역 입력 파일 내용
 const file = readFile(inPath);
-const inFileContentLines = new Set(
+const uniqueLines = new Set(
   pipe(file, extract, S.split("\n"), A.map(S.trim), A.filter(S.isNotEmpty)),
 );
-const tupledLines = pipe(
-  [...inFileContentLines],
-  A.map((line) => [line, line] as const),
-);
 
-const getTranslatedMap = async () => {
-  const cachedFile = fs.existsSync(cachedMapFile)
-    ? JSON.parse(readFile(cachedMapFile))
-    : {};
-  return async () => {
-    const translated = pipe(
-      tupledLines,
-      A.map(async ([k, v]) => {
-        if (Object.hasOwn(cachedFile, k)) {
-          console.log(chalk.cyan("CACHED:"), chalk.white(k.slice(0, 20)));
-          return [k, cachedFile[k]];
-        }
-        let retryCount = 0;
-        const run = async (): Promise<string> => {
-          try {
-            return await translate(v);
-          } catch (e: unknown) {
-            if (
-              (e as { message: string }).message.includes("Rate limit reached")
-            ) {
-              retryCount++;
-              console.log(
-                chalk.redBright("ERR:"),
-                chalk.yellow("RATE_LIMIT:"),
-                chalk.cyan("while translating"),
-                chalk.white(k.slice(0, 20)),
-                chalk.green(`retry:${retryCount}`),
-              );
-              await setTimeout(60000);
-              return await run();
-            }
-            console.log(
-              chalk.redBright("ERR:"),
-              chalk.red("UNKNOWN:"),
-              chalk.cyan("while translating"),
-              chalk.white(k.slice(0, 20), e),
-            );
-            return "";
-          } finally {
-            console.log(
-              chalk.greenBright("DONE:"),
-              chalk.white(k.slice(0, 20)),
-            );
-          }
-        };
-        return [k, await run()] as const;
-      }),
-    );
-    return D.fromPairs(
-      (await Promise.allSettled(translated))
-        .filter((x) => x.status === "fulfilled")
-        .map((x: PromiseFulfilledResult<readonly [string, string]>) => x.value),
-    );
-  };
-};
+//번역 수행
+const translatedMap = await getTranslatedMap(cachedMapFile, uniqueLines);
 
-const translatedMap = await (await getTranslatedMap())();
+//번역 캐시 맵 업데이트
+pipe(translatedMap, JSON.stringify, F.tap(writeFile(cachedMapFile)));
 
-writeFile(cachedMapFile)(JSON.stringify(translatedMap));
-
+//번역 파일에 번역 맵으로 치환
 pipe(
   file,
   S.split("\n"),
@@ -95,12 +39,14 @@ pipe(
         ]?.replaceAll("\\n", "") ?? x
       : x,
   ),
-  A.insertAt(1, "\\usepackage{kotex}"),
+  A.insertAt(1, "\\usepackage{kotex}"), //한글 패키지 추가
   A.join("\n"),
   F.tap(writeFile(outPath)),
 );
 
 console.log(chalk.bgMagenta.white("TRANSLATION DONE"));
+//빌드 수행
 build(argv[2] ?? "");
 console.log(chalk.bgMagenta.white("PDF GENERATION DONE"));
+//다 되면 파일을 엽니다.
 execSync(`open ./kr/pdf/${path.basename(fileOfChapter, ".tex")}.pdf`);
