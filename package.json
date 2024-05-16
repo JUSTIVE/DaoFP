@@ -6,7 +6,7 @@
     "extract": "bun scripts/extract.ts"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.7.2",
+    "@biomejs/biome": "^1.7.3",
     "@types/bun": "latest"
   },
   "peerDependencies": {
@@ -15,6 +15,7 @@
   "dependencies": {
     "@mobily/ts-belt": "^4.0.0-rc.5",
     "@types/node": "^20.12.8",
+    "chalk": "^5.3.0",
     "openai": "^4.42.0",
     "ts-pattern": "^5.1.1",
     "typescript": "^5.5.0-dev.20240507"

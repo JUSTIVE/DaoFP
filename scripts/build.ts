@@ -1,3 +1,3 @@
-import { execSync } from "child_process";
+import { execSync } from "node:child_process";
 
-execSync("pdflatex -shell-escape ./content/6-FunctionTypes.tex -output-directory=./kr")
+execSync("pdflatex -shell-escape ./kr/7-Recursion.tex -output-directory=./kr");
