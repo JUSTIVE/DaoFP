@@ -23,13 +23,18 @@ function removeBeginEnd(text: string): string {
   return text.replace(/\\begin\{(.|\n)*?\\end\{(.|\n)*?\}/g, "");
 }
 
+function removeClosingBracket(text: string): string {
+  return text.replace(/\\[\[\]]|/g, "");
+}
+
 export function extract(fileContent: string): string {
   return pipe(
-      fileContent,
-      filterPrefix,
-      removeBeginEnd,
-      // filterTexTag,
-      filterMultilineTex,
-      removeEmptyLines,
+    fileContent,
+    filterPrefix,
+    removeBeginEnd,
+    removeClosingBracket,
+    // filterTexTag,
+    filterMultilineTex,
+    removeEmptyLines,
   );
 }

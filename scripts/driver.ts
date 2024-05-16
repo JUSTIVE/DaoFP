@@ -23,62 +23,61 @@ const tupledLines = pipe(
   A.map((line) => [line, line] as const),
 );
 
-const getTranslatedMap = async () =>
-  (await fs.existsSync(cachedMapFile))
-    ? async () => {
-        console.log(chalk.cyan("using cached map"));
-        return JSON.parse(readFile(cachedMapFile));
-      }
-    : async () => {
-        const translated = pipe(
-          tupledLines,
-          A.map(async ([k, v]) => {
-            let retryCount = 0;
-            const run = async (): Promise<string> => {
-              try {
-                return await translate(v);
-              } catch (e: unknown) {
-                if (
-                  (e as { message: string }).message.includes(
-                    "Rate limit reached",
-                  )
-                ) {
-                  retryCount++;
-                  console.log(
-                    chalk.redBright("ERR:"),
-                    chalk.yellow("RATE_LIMIT:"),
-                    chalk.cyan("while translating"),
-                    chalk.white(k.slice(0, 20)),
-                    chalk.green(`retry:${retryCount}`),
-                  );
-                  await setTimeout(60000);
-                  return await run();
-                }
-                console.log(
-                  chalk.redBright("ERR:"),
-                  chalk.red("UNKNOWN:"),
-                  chalk.cyan("while translating"),
-                  chalk.white(k.slice(0, 20), e),
-                );
-                return "";
-              } finally {
-                console.log(
-                  chalk.greenBright("DONE:"),
-                  chalk.white(k.slice(0, 20)),
-                );
-              }
-            };
-            return [k, await run()] as const;
-          }),
-        );
-        return D.fromPairs(
-          (await Promise.allSettled(translated))
-            .filter((x) => x.status === "fulfilled")
-            .map(
-              (x: PromiseFulfilledResult<readonly [string, string]>) => x.value,
-            ),
-        );
-      };
+const getTranslatedMap = async () => {
+  const cachedFile = fs.existsSync(cachedMapFile)
+    ? JSON.parse(readFile(cachedMapFile))
+    : {};
+  return async () => {
+    const translated = pipe(
+      tupledLines,
+      A.map(async ([k, v]) => {
+        if (Object.hasOwn(cachedFile, k)) {
+          console.log(chalk.cyan("CACHED:"), chalk.white(k.slice(0, 20)));
+          return [k, cachedFile[k]];
+        }
+        let retryCount = 0;
+        const run = async (): Promise<string> => {
+          try {
+            return await translate(v);
+          } catch (e: unknown) {
+            if (
+              (e as { message: string }).message.includes("Rate limit reached")
+            ) {
+              retryCount++;
+              console.log(
+                chalk.redBright("ERR:"),
+                chalk.yellow("RATE_LIMIT:"),
+                chalk.cyan("while translating"),
+                chalk.white(k.slice(0, 20)),
+                chalk.green(`retry:${retryCount}`),
+              );
+              await setTimeout(60000);
+              return await run();
+            }
+            console.log(
+              chalk.redBright("ERR:"),
+              chalk.red("UNKNOWN:"),
+              chalk.cyan("while translating"),
+              chalk.white(k.slice(0, 20), e),
+            );
+            return "";
+          } finally {
+            console.log(
+              chalk.greenBright("DONE:"),
+              chalk.white(k.slice(0, 20)),
+            );
+          }
+        };
+        return [k, await run()] as const;
+      }),
+    );
+    return D.fromPairs(
+      (await Promise.allSettled(translated))
+        .filter((x) => x.status === "fulfilled")
+        .map((x: PromiseFulfilledResult<readonly [string, string]>) => x.value),
+    );
+  };
+};
 
 const translatedMap = await (await getTranslatedMap())();
 
@@ -89,7 +88,9 @@ pipe(
   S.split("\n"),
   A.map((x) =>
     Object.hasOwn(translatedMap, S.trim(x)) && S.trim(x).length > 0
-      ? translatedMap[x as unknown as keyof typeof translatedMap]
+      ? translatedMap[
+          S.trim(x) as unknown as keyof typeof translatedMap
+        ].replaceAll("\\n", "")
       : x,
   ),
   A.insertAt(1, "\\usepackage{kotex}"),
