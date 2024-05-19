@@ -18,4 +18,3 @@ export const build = (chapterNumber: string) => {
   execute();
   cleanUp();
 };
-3;

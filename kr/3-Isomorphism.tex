@@ -1,0 +1,466 @@
+\documentclass[DaoFP]{subfiles}
+\usepackage{kotex}
+\begin{document}
+\setcounter{chapter}{2}
+
+
+\chapter{Isomorphisms}
+
+우리가 다음과 같이 말할 때:
+\[f \circ (g \circ h) = (f \circ g) \circ h \]
+또는:
+\[ f = f \circ id \]
+우리는 화살표들의 \emph{동등성}(equality)을 주장하고 있습니다. 왼쪽의 화살표는 하나의 연산의 결과이고, 오른쪽의 화살표는 또 다른 하나의 결과입니다. 그러나 결과들은 \emph{동등}(equal)합니다.
+
+우리는 종종 이러한 동등성(equality)들을 \emph{commuting} 다이어그램을 그림으로써 설명합니다, 예를 들어,
+
+\[
+ \begin{tikzcd}
+ a
+ \arrow[r, "h"]
+ \arrow[rr, bend left=45, "g \circ h"]
+ \arrow[rrr, bend left=80, "f \circ (g \circ h)"]
+ \arrow[rrr, bend right=80, "(f \circ g) \circ h"]
+ & b
+ \arrow[r, "g"]
+ \arrow[rr, bend right=45, "f \circ g"]
+ &c
+ \arrow[r, "f"]
+ &d
+ \end{tikzcd}
+ \begin{tikzcd}
+ a
+ \arrow[r, "f"]
+ \arrow[r, loop, "id"']
+ &b
+ \end{tikzcd}
+\]
+
+따라서 우리는 화살표들을 동일성에 대해 비교합니다.
+
+우리는 객체를 동일성\footnote{반쯤 농담으로, 범주 이론에서 객체의 동일성을 호출하는 것은 "악"으로 간주된다.}으로 비교하지 \emph{않습니다}. 우리는 객체를 화살표의 합류점으로 보기 때문에, 두 객체를 비교하고자 할 때는 화살표를 봅니다.
+
+\section{Isomorphic Objects}
+
+가장 간단한 두 객체 간의 관계는 화살표입니다.
+
+가장 간단한 왕복은 반대 방향으로 가는 두 화살표의 합성입니다.
+
+\[
+ \begin{tikzcd}
+ a
+ \arrow[r, bend left, "f"]
+ & b
+ \arrow[l, bend left, "g"]
+ \end{tikzcd}
+\]
+
+두 가지 가능한 왕복 경로가 있습니다. 하나는 $g \circ f$로, 이는 $a$에서 $a$로 갑니다. 다른 하나는 $f \circ g$로, 이는 $b$에서 $b$로 갑니다.
+
+둘 다 항등식을 결과로 하면, 우리는 $g$가 $f$의 \emph{역원}이라고 합니다
+\[ g \circ f = id_a\]
+\[f \circ g = id_b\]
+그리고 이를 $g = f^{-1}$ (발음: $f$ \emph{역함수})라고 씁니다. 화살표 $f^{-1}$는 화살표 $f$가 한 작업을 원상태로 되돌립니다.
+
+이러한 화살표 쌍을 \emph{동형사상}(isomorphism)이라고 하며 두 객체를 \emph{동형}(isomorphic)이라고 합니다.
+
+Isomorphisms의 존재는 그것이 연결하는 두 객체(objects)에 대해 무엇을 말해 주는가?
+
+우리는 객체들이 서로 다른 객체들과의 상호작용으로 기술된다고 말했습니다. 그렇다면 두 동형 객체들이 관찰자 $x$의 관점에서 어떻게 보이는지 생각해 봅시다. $x$에서 $a$로 오는 화살표 $h$를 하나 잡아봅시다.
+
+\[
+ \begin{tikzcd}
+ & x
+ \arrow[ld, red, "h"']
+ \\
+ a
+ \arrow[rr, "f"]
+  && b
+ \arrow[ll, bend left,  "f^{-1}"]
+ \end{tikzcd}
+\]
+$x$에서 $b$로부터 나오는 대응 화살표가 있습니다. 이는 단지 $f \circ h$의 합성, 또는 $h$에 대한 $(f \circ -)$의 작용일 뿐입니다.
+\[
+ \begin{tikzcd}
+ & x
+ \arrow[ld, "h"']
+ \arrow[rd, red, "f \circ h"]
+ \\
+ a
+ \arrow[rr, "f"]
+  && b
+ \arrow[ll, bend left,  "f^{-1}"]
+ \end{tikzcd}
+\]
+비슷하게, 아무 화살표가 $b$를 시험하면 이에 대응하는 화살표가 $a$를 시험합니다. 그것은 $(f^{-1} \circ -)$의 작용에 의해 주어집니다.
+
+$a$와 $b$ 사이에서 초점을 이동하기 위해 $(f \circ -)$ 와 $(f^{-1} \circ -)$ 매핑을 사용할 수 있습니다.
+
+이 두 매핑을 결합하여 왕복 경로를 만들 수 있습니다. 결과는 합성 $((f^{-1} \circ f) \circ -)$를 적용했을 때와 동일합니다. 하지만 이는 $(id_a \circ -)$와 같으며, 우리가 연습 문제 \ref{ex-yoneda-identity}에서 알 수 있듯이, 화살표를 변경하지 않습니다.
+
+유사하게, $f \circ f^{-1}$에 의해 유도된 왕복 여행은 화살표 $x \to b$을 변경하지 않습니다.
+
+이것은 두 화살표 그룹 간의 ``짝 시스템''을 만듭니다. 각 화살표가 $f$나 $f^{-1}$에 의해 정해진 짝에게 메시지를 보내는 것을 상상해 보세요. 각 화살표는 정확히 하나의 메시지를 받을 것이며, 그 메시지는 짝에게서 온 메시지일 것입니다. 어떤 화살표도 남겨지지 않으며, 어떤 화살표도 하나 이상의 메시지를 받지 않을 것입니다. 수학자들은 이러한 종류의 짝 시스템을 \emph{전사} 또는 일대일 대응(one-to-one correspondence)이라고 부릅니다.
+
+따라서, $x$의 관점에서는 두 객체 $a$와 $b$는 화살표(arrow) 하나하나가 똑같이 보입니다. 화살표 기준으로, 두 객체 사이에 차이는 없습니다.
+
+두 개의 동형(isomorphic) 객체(objects)는 정확히 동일한 성질(properties)을 가집니다.
+
+특히, 만약 $x$를 종점 개체 터미널 객체 $1$로 대체하면 두 개체가 동일한 요소를 가지고 있음을 알 수 있습니다. 모든 요소 $x \colon 1 \to a$에 대해, 이에 대응하는 요소 $y \colon 1 \to b$가 있으며, 즉 $y = f \circ x$이고, 그 반대도 성립합니다. 동형 객체들의 요소들 사이에는 일대일 대응(bijection)이 있습니다.
+
+이와 같은 구별할 수 없는 객체들은 \emph{isomorphic}(동형)이라고 불리는데, 이는 "같은 형태"를 가지고 있기 때문입니다. 하나를 보면 다 본 것입니다.
+
+이 동형사상을 다음과 같이 씁니다:
+
+\[a \cong b\]
+
+대상(object)들을 다룰 때, 우리는 동형(isomorphism)을 등식(equality) 대신 사용합니다.
+
+프로그래밍에서 두 동형(isomorphic) 타입은 동일한 외부 동작을 가집니다. 한 타입은 다른 타입을 통해 구현될 수 있으며, 반대로도 가능합니다. 시스템의 동작(성능을 제외하고)을 변경하지 않고 하나를 다른 하나로 대체할 수 있습니다.
+
+고전 논리에서 B가 A로부터 따르고 A가 B로부터 따른다면 A와 B는 논리적으로 동등합니다. 우리는 종종 B가 ``오직 A가 참일 때에만'' 참이라고 말합니다. 그러나 논리학과 유형 이론 사이의 이전의 유사점들과 달리, 만약 당신이 증명이 관련 있다고 생각한다면, 이것은 그리 간단하지 않습니다. 실제로, 이것은 호모토피 유형 이론(Homotopy Type Theory, HoTT)이라고 불리는 새로운 기초 수학의 분과를 발전시키게 했습니다.
+
+\begin{exercise}
+Make an argument that there is a bijection between arrows that are \emph{outgoing} from two isomorphic objects. Draw the corresponding diagrams.
+\end{exercise}
+
+
+\begin{exercise}
+Show that every object is isomorphic to itself
+\end{exercise}
+
+\begin{exercise}
+If there are two terminal objects, show that they are isomorphic
+\end{exercise}
+
+\begin{exercise}
+Show that the isomorphism from the previous exercise is unique.
+\end{exercise}
+
+\section{Naturality}
+
+우리는 두 객체가 동형일 때, 사후 합성(post-composition)을 사용하여 한 객체에서 다른 객체로 초점을 전환할 수 있음을 보았습니다: $(f \circ -)$ 또는 $(f^{-1} \circ -)$.
+
+반대로, 다른 관찰자로 전환하기 위해서는 사전 구성(pre-composition)을 사용할 것입니다.
+
+실제로, $x$로부터 $a$를 탐색하는 화살표 $h$는 $y$로부터 동일한 객체를 탐색하는 화살표 $h\circ g$와 관련이 있습니다.
+
+\[
+ \begin{tikzcd}
+ x
+ \arrow[d, "h"']
+ && y
+ \arrow[ll, dashed, "g"']
+  \arrow[dll, red, "h \circ g"']
+ \\
+ a
+ \arrow[rr, "f"]
+  && b
+ \arrow[ll, bend left,  "f^{-1}"]
+ \end{tikzcd}
+\]
+비슷하게, $x$ 로부터 $b$ 를 탐색하는 사상 $h'$ 은 그것을 $y$ 로부터 탐색하는 사상 $h' \circ g$ 에 해당합니다.
+
+\[
+ \begin{tikzcd}
+ x
+ \arrow[drr, "h'"]
+ && y
+ \arrow[ll, dashed, "g"']
+  \arrow[d, red, "h' \circ g"]
+ \\
+ a
+ \arrow[rr, "f"]
+  && b
+ \arrow[ll, bend left,  "f^{-1}"]
+ \end{tikzcd}
+\]
+두 경우 모두에서, 우리는 $(- \circ g)$ 사전구성(Precomposition)을 적용하여 관점을 $x$에서 $y$로 변경합니다.
+
+중요한 관찰은 관점의 변화가 동형사상에 의해 확립된 버디 시스템을 보존한다는 것입니다. 만약 두 화살표가 $x$의 관점에서 버디(buddies)였다면, 그들은 여전히 $y$의 관점에서도 버디입니다. 이는 먼저 $g$와 전합성하여(관점 전환) $f$와 후합성(초점 전환)하거나, 먼저 $f$와 후합성하여 $g$와 전합성하는 것이 중요하지 않다는 간단한 진술과 같습니다. 기호적으로, 우리는 이를 다음과 같이 씁니다:
+
+\[(- \circ g) \circ (f \circ -) = (f \circ -) \circ (- \circ g)\]
+그리고 우리는 이것을 \emph{자연성(naturality)} 조건이라고 부릅니다.
+
+
+이 방정식의 의미는 사상 $h \colon x \to a$에 적용할 때 드러납니다. 양쪽 모두 $f \circ h \circ g$로 평가됩니다.
+\[
+ \begin{tikzcd}
+ h
+ \arrow[r, mapsto, "(- \circ g)"]
+ \arrow[d, mapsto, "(f \circ -)"']
+ & h \circ g
+ \arrow[d, mapsto, "(f \circ -)"]
+ \\
+ f \circ h
+ \arrow[r, mapsto, "(- \circ g)"]
+& f \circ h \circ g
+ \end{tikzcd}
+\]
+
+여기에서는 자연성(naturality) 조건이 결합법칙(associativity) 때문에 자동으로 만족되지만, 우리는 곧 덜 자명한 환경으로 이를 일반화하는 것을 보게 될 것입니다.
+
+
+화살표는 동형(isomorphism)에 대한 정보를 전파하는 데 사용됩니다. 자연성(Naturality)은 모든 객체가 경로에 상관없이 일관된 관점을 갖는다는 것을 알려줍니다.
+
+우리는 또한 관찰자와 피사체의 역할을 바꿀 수 있습니다. 예를 들어, 화살표 $h \colon a \to x$를 사용하여, 객체 $a$는 임의의 객체 $x$를 탐색할 수 있습니다. 만약 $g \colon x \to y$라는 화살표가 있다면, $y$로 초점을 전환할 수 있습니다. 관점을 $b$로 전환하는 것은 $f^{-1}$와의 사전 조합으로 이루어집니다.
+\[
+ \begin{tikzcd}
+ a
+ \arrow[rr, "f"]
+ \arrow[d, "h"']
+ \arrow[rrd, red, "g\circ h"]
+ && b
+  \arrow[ll, bend right,  "f^{-1}"']
+ \\
+ x
+ \arrow[rr, dashed, "g"']
+  && y
+ \end{tikzcd}
+\]
+다시 한 번, 이번에는 동형 사상 쌍의 관점에서 자연성 조건을 가지는데:
+\[(- \circ f^{-1}) \circ (g \circ -) = (g \circ -) \circ (- \circ f^{-1}) \]
+
+이런 상황에서 한 장소에서 다른 장소로 이동하기 위해 두 단계를 거쳐야 하는 것은 범주론(카테고리 이론)에서 일반적입니다. 여기서 전합성(前合成, pre-composition)과 후합성(後合成, post-composition)의 연산은 어떤 순서로 실행하든 상관없습니다---이를 \index{commuting operations}\emph{통일 작용}이라고 합니다. 그러나 일반적으로 단계를 밟는 순서에 따라 다른 결과가 나옵니다. 우리는 종종 통일 조건을 부여하고 이러한 조건이 유지되는 경우 한 연산이 다른 연산과 호환된다고 말합니다.
+
+\begin{exercise}
+Show that both sides of the naturality condition for $f^{-1}$, when acting on $h$, reduce to:
+\[
+ \begin{tikzcd}
+ b \arrow[r, "f^{-1}"] &a \arrow[r, "h"] & x \arrow[r, "g"] & y
+\end{tikzcd}
+\]
+
+\end{exercise}
+
+\section{Reasoning with Arrows}
+
+Master Yoneda가 말하길: ``화살표를 보게!''
+
+두 객체가 동형(isomorphic)이라면, 그들은 동일한 집합의 들어오는 화살표(arrow)를 가집니다.
+
+두 객체가 동형(isomorphic)이라면, 그들도 동일한 집합의 나가는 화살표들을 가집니다.
+
+두 객체가 동형(isomorphic)인지 확인하고 싶다면, 화살표를 보세요!
+
+\medskip
+
+두 객체 $a$와 $b$가 동형(isomorphic)일 때, 어떤 동형사상(isomorphism) $f$도 대응하는 화살표(arrow) 집합들 간의 일대일 대응(mapping) $(f \circ -)$을 유도합니다.
+\[
+ \begin{tikzcd}
+ \node(x) at (0, 2) {x};
+ \node(a) at (-2, 0) {a};
+ \node(b) at (2, 0) {b};
+ \node(c1) at (-1, 1.5) {};
+ \node(c2) at (-1.5, 1) {};
+ \node(c3) at (-1, 2) {};
+ \node(c4) at (-2, 1) {};
+ \node(d1) at (1, 1.5) {};
+ \node(d2) at (1.5, 1) {};
+ \node(d3) at (1, 2) {};
+ \node(d4) at (2, 1) {};
+\node (aa) at (-1, 0.75) {};
+ \node (bb) at (1, 0.75) {};
+ \draw[->] (x) .. controls (c1)  and (c2) .. (a); % bend
+ \draw[->, green] (x) .. controls (c3)  and (c4) .. (a); % bend
+ \draw[->, blue] (x) -- (a); 
+  \draw[->] (x) .. controls (d1)  and (d2) .. (b); % bend
+ \draw[->, green] (x) .. controls (d3)  and (d4) .. (b); % bend
+ \draw[->, blue] (x) -- (b); 
+ \draw[->, red, dashed] (aa) -- node[above]{(f \circ -)} (bb);
+\draw[->] (a) -- node[below]{f} (b);
+ \end{tikzcd}
+\]
+함수 $(f \circ -)$는 모든 화살표 $h \colon x \to a$를 화살표 $f \circ a \colon x \to b$에 매핑합니다. 그 역함수 $(f^{-1} \circ -)$는 모든 화살표 $h' \colon x \to b$를 화살표 $(f^{-1} \circ h')$에 매핑합니다.
+
+
+만약 우리가 객체들이 동형인지 모른다고 가정하지만, 모든 객체 $x$로부터 $a$와 $b$에 도달하는 화살표 집합들 사이에 $\alpha_x$라는 역변환 가능 매핑이 존재함을 알고 있다고 가정해 봅시다. 다시 말해, 각 $x$에 대해 $\alpha_x$는 화살표들의 전단사 함수(전단사 함수, bijection)입니다.
+\[
+ \begin{tikzcd}
+ \node(x) at (0, 2) {x};
+ \node(a) at (-2, 0) {a};
+ \node(b) at (2, 0) {b};
+ \node(c1) at (-1, 1.5) {};
+ \node(c2) at (-1.5, 1) {};
+ \node(c3) at (-1, 2) {};
+ \node(c4) at (-2, 1) {};
+ \node(d1) at (1, 1.5) {};
+ \node(d2) at (1.5, 1) {};
+ \node(d3) at (1, 2) {};
+ \node(d4) at (2, 1) {};
+\node (aa) at (-1, 0.75) {};
+ \node (bb) at (1, 0.75) {};
+ \draw[->] (x) .. controls (c1)  and (c2) .. (a); % bend
+ \draw[->, green] (x) .. controls (c3)  and (c4) .. (a); % bend
+ \draw[->, blue] (x) -- (a); 
+  \draw[->] (x) .. controls (d1)  and (d2) .. (b); % bend
+ \draw[->, green] (x) .. controls (d3)  and (d4) .. (b); % bend
+ \draw[->, blue] (x) -- (b); 
+ \draw[->, red, dashed] (aa) -- node[above]{\alpha_x} (bb);
+ \end{tikzcd}
+\]
+이전에, 사상의 전단사 함수는 $f$의 동형 사상에 의해 생성되었음니다. 이제, 사상의 전단사 함수는 $\alpha_x$에 의해 주어집니다. 이것은 두 객체가 동형이라는 것을 의미합니까? $\alpha_x$의 함숫값족으로부터 동형 사상 $f$를 구성할 수 있습니까? 답은 ``예''입니다. 단, $\alpha_x$ 족이 자연성 조건을 만족하는 경우에 한합니다.
+
+$\alpha_x$의 특정 화살표 $h$에 대한 동작은 다음과 같습니다.
+\[
+ \begin{tikzcd}
+ x
+ \arrow[d, "h"']
+ \arrow[rrd, red, "\alpha_x h"]
+  \\
+ a
+  && b
+ \end{tikzcd}
+\]
+이 사상(mapping)은, 만약 동형사상(isomorphism) $f$가 존재한다면 $(f \circ -)$와 $(f^{-1} \circ -)$의 역할을 수행하게 되는, 사상 $x \to b$를 사상 $x \to a$로 변환시키는 역함수(inverse function) $\alpha^{-1}_x$와 함께합니다. 사상 $\alpha$의 가족(family)은 $a$에서 $b$로 초점을 전환하는 ``인위적인'' 방법을 설명합니다.
+
+다른 관찰자 $y$의 관점에서 본 동일한 상황입니다:
+\[
+ \begin{tikzcd}
+ x
+  && y
+ \arrow[lld, "h'"']
+ \arrow[d, red, "\alpha_y h'"]
+ \\
+ a
+  && b
+ \end{tikzcd}
+\]
+유의할 점은 $y$는 동일한 계열의 다른 사상(mapping)인 $\alpha_y$를 사용한다는 점입니다.
+
+이 두 매핑(mappings) $\alpha_x$와 $\alpha_y$는 $y$에서 $x$로 가는 사상(morphism) $g \colon y \to x$가 있을 때 서로 얽히게 됩니다. 이 경우, $g$와의 사전 합성(pre-composition)은 우리가 관점을 $x$에서 $y$로 전환할 수 있게 해줍니다 (방향에 주목하세요).
+
+\[
+ \begin{tikzcd}
+ x
+ \arrow[d, "h"']
+ && y
+ \arrow[ll, dashed, "g"']
+ \arrow[lld, red, "h \circ g"]
+ \\
+ a
+  && b
+ \end{tikzcd}
+\]
+우리는 포커스의 전환과 관점의 전환을 분리했습니다. 전자는 $\alpha$에 의해 수행되고, 후자는 전합성에 의해 수행됩니다. 자연성은 이 두 가지 사이의 호환 조건을 부여합니다.
+
+Indeed, starting with some $h$, we can either apply $(- \circ g)$ to switch to $y$'s point of view, and then apply $\alpha_y$ to switch focus to $b$: 사실, $h$로 시작하면 $(- \circ g)$를 적용해 $y$의 시각으로 전환할 수 있고, 그런 다음 $\alpha_y$를 적용해 $b$로 초점을 바꿀 수 있습니다:
+\[ \alpha_y \circ (- \circ g) \]
+혹은 $x$가 $\alpha_x$를 사용하여 먼저 $b$로 초점을 바꾸게 하고, 그 다음 $(- \circ g)$를 사용하여 관점을 바꿀 수 있습니 다:
+\[ (- \circ g) \circ \alpha_x \]
+두 경우 모두 $y$로부터 $b$를 바라보게 됩니다. 우리는 이전에 $a$와 $b$ 사이에 동형사상(isomorphism)이 있을 때 이 연습을 해보았고, 결과가 동일하다는 것을 발견했습니다. 우리는 이것을 자연성 조건(naturality condition)이라고 불렀습니다.
+
+만약 우리가 $\alpha$들이 동형사상(isomorphism)을 제공하기를 원한다면, 동등한 자연성 조건(naturality condition)을 부과해야 합니다:
+\[ \alpha_y \circ (- \circ g) = (- \circ g) \circ \alpha_x \]
+어떤 화살표 $h \colon x \to a$에 작용할 때, 우리는 이 다이어그램이 가환(commute)하기를 원합니다:
+\[
+ \begin{tikzcd}
+ h
+ \arrow[r, mapsto, "(- \circ g)"]
+ \arrow[d, mapsto, red, "\alpha_x"]
+ & h \circ g
+ \arrow[d, mapsto, red, "\alpha_y"]
+ \\
+ \alpha_x h
+ \arrow[r, mapsto, "(- \circ g)"]
+&(\alpha_x h) \circ g = \alpha_y (h \circ g)
+ \end{tikzcd}
+\]
+이 방법으로 우리는 모든 $\alpha$를 $(f \circ -)$로 교체하는 것이 작동한다는 것을 알게 됩니다. 그러나 그러한 $f$가 존재합니까? 우리는 $\alpha$로부터 $f$를 재구성할 수 있습니까? 답은 예이며, 우리는 요네다 트릭(Yoneda trick)을 사용하여 이를 달성할 것입니다.
+
+$\alpha_x$는 임의의 객체 $x$에 대해 정의되므로 $a$ 자체에 대해서도 정의됩니다. 정의에 따라, $\alpha_a$는 사상 $a \to a$를 사상 $a \to b$로 바꿉니다. 적어도 하나의 사상 $a \to a$, 즉 항등사상 $id_a$가 존재한다는 것은 확실합니다. 우리가 찾고 있는 동형사상 $f$는 다음과 같이 주어집니다:
+\[f = \alpha_a (id_a)\]
+혹은 그림으로 나타내면:
+\[
+ \begin{tikzcd}
+a
+ \arrow[d, "id_a"']
+ \arrow[rrd, red, "f = \alpha_a (id_a)"]
+  \\
+ a
+  && b
+ \end{tikzcd}
+\]
+
+이를 검증해 봅시다. 만약 $f$가 실제로 우리의 동형사상(isomorphism)이라면, 임의의 $x$에 대해 $\alpha_x$는 $(f \circ -)$과 같아야 합니다. 이를 확인하기 위해, 자연성 조건을 $x$를 $a$로 대체하여 다시 써 봅시다. 그러면:
+\[\alpha_y(h \circ g) = (\alpha_a h) \circ g \]
+다음 다이어그램에서 설명된 대로:
+\[
+ \begin{tikzcd}
+ a
+ \arrow[d, "h"']
+ \arrow[rrd,  red, "\alpha_a (h)"']
+ && y
+ \arrow[ll, "g"']
+ \arrow[d, red, "\alpha_y (h \circ g)"]
+   \\
+ a
+  && b
+ \end{tikzcd}
+\]
+
+
+출처와 대상 모두 $h$ 가 $a$ 이므로, 이 등식은 $h = id_a$ 에 대해서도 참이어야 합니다.
+\[\alpha_y (id_a \circ g) = (\alpha_a (id_a)) \circ g \]
+하지만 $id_a \circ g$는 $g$와 같고 $\alpha_a(id_a)$는 우리의 $f$이므로, 우리는 다음을 얻습니다:
+\[\alpha_y g = f \circ g = (f \circ -) g\]
+다시 말해, $\alpha_y = (f \circ -)$ 모든 객체 $y$와 모든 사상(morphism) $g \colon y \to a$에 대해 그렇습니다.
+
+알아두세요, 비록 $\alpha_x$가 모든 $x$와 화살표 $x \to a$에 대해 개별적으로 정의되었지만, 이는 단일 항등 화살표에서의 값에 의해 완전히 결정됨을 알 수 있습니니다. 이것이 자연성의 힘입니니다!
+\subsection{Reversing the Arrows}
+노자(老子)가 말했듯이, 관찰자와 관찰 대상 간의 이원성은 관찰자가 관찰 대상과 역할을 교환할 수 있어야만 완전해집니다.
+
+다시 한 번, 두 객체 $a$와 $b$가 동일한 구조를 가지고 있음을 보이고 싶습니다. 하지만 이번에는 이들을 관찰자로 취급하고자 합니다. 화살표 $h \colon a \to x$는 $a$의 관점에서 임의의 객체 $x$를 탐구합니다. 이전에는 두 객체가 동일한 구조를 가지고 있음을 알았을 때, $(- \circ f^{-1})$를 사용하여 $b$의 관점으로 전환할 수 있었습니다. 이번에는 화살표 $\beta_x$를 대신 사용할 수 있습니다. 이는 $x$에 도달하는 화살표 사이의 일대일 대응을 확립합니다.
+\[
+ \begin{tikzcd}
+ x
+ \\
+ a
+\arrow[u, "h"]
+ && b
+  \arrow[llu, red, "\beta_x h"']
+  \end{tikzcd}
+\]
+다른 객체 $y$를 관찰하고 싶다면, 우리는 $\beta_y$를 사용하여 $a$와 $b$ 사이의 관점을 전환할 것입니다.
+
+\[
+ \begin{tikzcd}
+ \node(x) at (0, 2) {x};
+ \node(a) at (-2, 0) {a};
+ \node(b) at (2, 0) {b};
+ \node(c1) at (-1, 1.5) {};
+ \node(c2) at (-1.5, 1) {};
+ \node(c3) at (-1, 2) {};
+ \node(c4) at (-2, 1) {};
+ \node(d1) at (1, 1.5) {};
+ \node(d2) at (1.5, 1) {};
+ \node(d3) at (1, 2) {};
+ \node(d4) at (2, 1) {};
+\node (aa) at (-1, 0.75) {};
+ \node (bb) at (1, 0.75) {};
+ \draw[<-] (x) .. controls (c1)  and (c2) .. (a); % bend
+ \draw[<-, green] (x) .. controls (c3)  and (c4) .. (a); % bend
+ \draw[<-, blue] (x) -- (a); 
+  \draw[<-] (x) .. controls (d1)  and (d2) .. (b); % bend
+ \draw[<-, green] (x) .. controls (d3)  and (d4) .. (b); % bend
+ \draw[<-, blue] (x) -- (b); 
+ \draw[->, red, dashed] (aa) -- node[above]{\beta_x} (bb);
+ \end{tikzcd}
+\]
+
+
+$x$ 과 $y$ 두 객체가 화살표 $g \colon x \to y$ 로 연결되어 있다면 $(g \circ -)$ 을 사용하여 초점을 바꾸는 옵션도 있다. 시점을 바꾸고 초점도 바꾸고 싶다면, 두 가지 방법이 있다. 자연성(naturality)은 그 결과가 같도록 요구한다:
+\[ (g \circ -) \circ \beta_x = \beta_y \circ (g \circ -) \]
+실제로 우리가 $\beta$를 $(- \circ f^{-1})$로 대체하면, 우리는 동형사상(isomorphism)에 대한 자연성 조건을 회복하게 됩니다.
+
+\begin{exercise}
+Use the trick with the identity morphism to recover $f^{-1}$ from the family of mappings $\beta$.
+\end{exercise}
+\begin{exercise}
+Using $f^{-1}$ from the previous exercise, evaluate $\beta_y g$ for an arbitrary object $y$ and an arbitrary arrow $g \colon a \to y$.
+\end{exercise}
+
+
+라오쯔가 말했듯이: 동형사상(isomorphism)을 보이기 위해, 두 객체 사이의 화살 하나(pair of arrows)를 찾는 것보다 만 개의 화살(ten thousand arrows) 사이의 자연 변환(natural transformation)을 정의하는 것이 종종 더 쉽습니다.
+
+\end{document}

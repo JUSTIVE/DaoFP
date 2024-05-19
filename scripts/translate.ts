@@ -76,7 +76,9 @@ export const getTranslatedMap = async (
         }
         return res;
       };
-      return [line, (await run()).replaceAll("내용:", "")] as const;
+      const postProcess = (res: string) =>
+        res.replaceAll("내용:", "").replaceAll("\n", "");
+      return [line, postProcess(await run())] as const;
     }),
   );
   return D.fromPairs(
