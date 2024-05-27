@@ -3,7 +3,7 @@
 \begin{document}
 \setcounter{chapter}{8}
 
-\chapter{자연 변환(Natural Transformations)}
+\chapter{Natural Transformations}
 
 우리는 두 객체 $a$와 $b$가 동형일 때, 화살표(arrow)의 집합들 간의 전단사(bijection)를 생성함을 보았습니다. 이를 이제 호옴 집합(hom-set) 간의 동형(isomorphism)으로 표현할 수 있습니다:
 \begin{align*}
@@ -111,7 +111,7 @@ $g \colon y \to x$와의 사전구성(Precomposition)은 또한 hom-셋들의 �
 
 다시 한 번, 이러한 가역적 자연 변환(invertible natural transformation) $\beta$는 $a$와 $b$ 사이의 동형사상(isomorphism)을 확립합니다.
 
-\section{함자(Functor) 간의 자연 변환(Natural Transformation)}
+\section{Natural Transformation Between Functors}
 
 이전 섹션에서 나온 두 hom-함자들은
 \begin{align*}
@@ -207,7 +207,7 @@ $\mathcal{C}$의 모든 화살(arrow)에 대해 해당하는 자연성 정사각
 
 자연 변환(natural transformations)은 다양한 상황에서 교환 조건(commuting conditions)을 표현하는 고차원(high-level) 방식으로 매우 편리합니다. 우리는 대수적 데이터 유형(algebraic data types)의 정의를 재구성하기 위해 이 능력을 사용할 것입니다.
 
-\section{프로그래밍에서의 자연 변환 (Natural Transformations)}
+\section{Natural Transformations in Programming}
 
 자연 변환은 객체에 의해 매개변수화된 화살들의 집합입니다. 프로그래밍에서 이는 타입(type)에 의해 매개변수화된 함수들의 집합에 해당하며, 이는 \emph{다형성 함수}입니다.
 
@@ -296,7 +296,7 @@ reverse (a : as) = reverse as ++ [a]
 
 한편, 거의 모든 매개변수 다형성(parametrically polymorphic) 함수는 자연 변환(natural transformation)입니다. 경우에 따라서는 항등 함수(identity)나 상수 함자(constant functor)를 출발점(source) 또는 도착점(target)으로 고려해야 할 수도 있습니다. 예를 들어, 다형성 항등 함수(polymorphic identity function)는 두 항등 함자 사이의 자연 변환으로 생각될 수 있습니다.
 
-\subsection{자연 변환의 수직 합성 (Vertical composition of natural transformations)}
+\subsection{Vertical composition of natural transformations}
 
 자연 변환은 \emph{평행한}(parallel) 함자(functors) 사이에서만 정의될 수 있습니다. 즉, 동일한 원천 범주(source category)와 동일한 대상 범주(target category)를 공유하는 함자입니다. 이러한 평행한 함자들은 \emph{함자 범주}(functor category)를 형성합니다. 두 범주 $\mathcal{C}$와 $\mathcal{D}$ 사이의 함자 범주에 대한 표준 표기법은 $[\mathcal{C}, \mathcal{D}]$인데, 이는 대괄호 안에 두 범주의 이름을 적는 것입니다.
 
@@ -354,7 +354,7 @@ H x
 
 Haskell에서 자연 변환(natural transformation)의 수직 조합(vertical composition)은 다형 함수(polymorphic function)에 적용된 일반적인 함수 조합(function composition)과 같습니다. 자연 변환이 항목을 컨테이너 간에 이동시킨다는 직관을 사용하면, 수직 조합은 이러한 두 이동을 순차적으로 결합하는 것과 같습니다.
 
-\subsection{펑터 범주(Functor categories)}
+\subsection{Functor categories}
 
 자연 변환(natural transformations)의 합성은 화살표(arrow)의 합성으로 정의되기 때문에 자동으로 결합법칙(associative)을 만족합니다.
 
@@ -381,7 +381,7 @@ Hint: Use the definition of $\gamma$ and the two naturality conditions for $\alp
 \end{exercise}
 
 
-\subsection{자연 변환의 수평 합성(Horizontal composition of natural transformations)}
+\subsection{Horizontal composition of natural transformations}
 
 자연 변환(natural transformations)의 두 번째 합성(composition) 종류는 함자(functors)의 합성에 의해 유도됩니니다. 합성이 가능한(composable) 함자 두 개가 있다고 가정합니다.
 \begin{align*}
@@ -489,68 +489,14 @@ beta_alpha = fmap alpha . beta
 \node at (0, 0) {$F$};
 \node at (0, -1.3) {$G$};
 \end{tikzpicture}
-\hspace{20pt}카테고리 이론(category theory)은 
-\hspace{20pt}수학 및 이론 컴퓨터 과학에서 구조들과 그 사이의 관계
-\hspace{20pt}들을 연구하는 학문입니다. 카테고리(category)는 객체(objects)와
-\hspace{20pt}화살표(arrows 또는 morphisms)로 구성됩니다. 각 화살표는
-\hspace{20pt}두 객체 사이를 연결하며, 함수처럼 행동합니다. 
-ewline
-\hspace{20pt}카테고리는 다음과 같은 구성 요소를 가집니다:
-\hspace{20pt}1. 객체들의 모임 \(\mathcal{C}\). 틀린 부분이 그냥 넘어간다.
-\hspace{20pt}2. 각 객체 \(X\)와 \(Y\)에 대해, \(X\)에서 \(Y\)로 가는
-\hspace{20pt}화살표들의 집합 \(\text{Hom}(X, Y)\).
-\hspace{20pt}3. 각 객체 \(X\)에 대해, \(X\)에서 자기 자신으로 가는
-\hspace{20pt}항등 화살표(identity arrow) \(\text{id}_X\).
-\hspace{20pt}4. 각 세 개의 객체 \(X\), \(Y\), \(Z\)에 대해 두
-\hspace{20pt}화살표 \(f \in \text{Hom}(X, Y)\) 및 \(g \in \text{Hom}(Y, Z)\)에 대해
-\hspace{20pt}합성 화살표(composite arrow) \(g \circ f \in \text{Hom}(X, Z)\).
-ewline
-\hspace{20pt}이 합성 연산은 결합 법칙을 만족해야 하며,
-\hspace{20pt}모든 객체 \(X\)에 대해 항등원 법칙을 만족해야 합니다:
-\hspace{20pt}1. (결합 법칙) 세 개의 화살표 \(f \in \text{Hom}(W, X)\),
-\hspace{20pt}\(g \in \text{Hom}(X, Y)\), \(h \in \text{Hom}(Y, Z)\)에 대해,
-\hspace{20pt}\(h \circ (g \circ f) = (h \circ g) \circ f\).
-\hspace{20pt}2. (항등원 법칙) 모든 화살표 \(f \in \text{Hom}(X, Y)\)에 대해,
-\hspace{20pt}\(\text{id}_Y \circ f = f\) 및 \(f \circ \text{id}_X = f\).
-ewline
-\hspace{20pt}다양한 카테고리의 예로는 집합의 카테고리 \(\textbf{Set}\),
-\hspace{20pt}위상 공간의 카테고리 \(\textbf{Top}\), 아벨 군의 카테고리
-\hspace{20pt}\(\textbf{Ab}\) 등이 있습니다. 이론 컴퓨터 과학에서는 
-\hspace{20pt}프로그래밍 언어의 의미론을 연구하기 위해 카테고리 이론을 사용합니다.
+\hspace{20pt}
 \begin{tikzpicture}
 \filldraw[fill=blue!50!green!20, draw=white] (0, 0) ellipse (1.2 and 1.8);
 \filldraw[fill=orange!30, draw=white] (0, 0) ellipse (0.8 and 0.4);
 \node at (0, 0) {$F'$};
 \node at (0, -1.3) {$G$};
 \end{tikzpicture}
-\hspace{20pt}카테고리 이론(category theory)은 
-\hspace{20pt}수학 및 이론 컴퓨터 과학에서 구조들과 그 사이의 관계
-\hspace{20pt}들을 연구하는 학문입니다. 카테고리(category)는 객체(objects)와
-\hspace{20pt}화살표(arrows 또는 morphisms)로 구성됩니다. 각 화살표는
-\hspace{20pt}두 객체 사이를 연결하며, 함수처럼 행동합니다. 
-ewline
-\hspace{20pt}카테고리는 다음과 같은 구성 요소를 가집니다:
-\hspace{20pt}1. 객체들의 모임 \(\mathcal{C}\). 틀린 부분이 그냥 넘어간다.
-\hspace{20pt}2. 각 객체 \(X\)와 \(Y\)에 대해, \(X\)에서 \(Y\)로 가는
-\hspace{20pt}화살표들의 집합 \(\text{Hom}(X, Y)\).
-\hspace{20pt}3. 각 객체 \(X\)에 대해, \(X\)에서 자기 자신으로 가는
-\hspace{20pt}항등 화살표(identity arrow) \(\text{id}_X\).
-\hspace{20pt}4. 각 세 개의 객체 \(X\), \(Y\), \(Z\)에 대해 두
-\hspace{20pt}화살표 \(f \in \text{Hom}(X, Y)\) 및 \(g \in \text{Hom}(Y, Z)\)에 대해
-\hspace{20pt}합성 화살표(composite arrow) \(g \circ f \in \text{Hom}(X, Z)\).
-ewline
-\hspace{20pt}이 합성 연산은 결합 법칙을 만족해야 하며,
-\hspace{20pt}모든 객체 \(X\)에 대해 항등원 법칙을 만족해야 합니다:
-\hspace{20pt}1. (결합 법칙) 세 개의 화살표 \(f \in \text{Hom}(W, X)\),
-\hspace{20pt}\(g \in \text{Hom}(X, Y)\), \(h \in \text{Hom}(Y, Z)\)에 대해,
-\hspace{20pt}\(h \circ (g \circ f) = (h \circ g) \circ f\).
-\hspace{20pt}2. (항등원 법칙) 모든 화살표 \(f \in \text{Hom}(X, Y)\)에 대해,
-\hspace{20pt}\(\text{id}_Y \circ f = f\) 및 \(f \circ \text{id}_X = f\).
-ewline
-\hspace{20pt}다양한 카테고리의 예로는 집합의 카테고리 \(\textbf{Set}\),
-\hspace{20pt}위상 공간의 카테고리 \(\textbf{Top}\), 아벨 군의 카테고리
-\hspace{20pt}\(\textbf{Ab}\) 등이 있습니다. 이론 컴퓨터 과학에서는 
-\hspace{20pt}프로그래밍 언어의 의미론을 연구하기 위해 카테고리 이론을 사용합니다.
+\hspace{20pt}
 \begin{tikzpicture}
 \filldraw[fill=blue!10, draw=white] (0, 0) circle (1.2);
 \filldraw[fill=orange!30, draw=white] (0, 0) ellipse (0.8 and 0.4);
@@ -569,68 +515,14 @@ ewline
 \node at (0, 0) {$F$};
 \node at (0, -1.3) {$G$};
 \end{tikzpicture}
-\hspace{20pt}카테고리 이론(category theory)은 
-\hspace{20pt}수학 및 이론 컴퓨터 과학에서 구조들과 그 사이의 관계
-\hspace{20pt}들을 연구하는 학문입니다. 카테고리(category)는 객체(objects)와
-\hspace{20pt}화살표(arrows 또는 morphisms)로 구성됩니다. 각 화살표는
-\hspace{20pt}두 객체 사이를 연결하며, 함수처럼 행동합니다. 
-ewline
-\hspace{20pt}카테고리는 다음과 같은 구성 요소를 가집니다:
-\hspace{20pt}1. 객체들의 모임 \(\mathcal{C}\). 틀린 부분이 그냥 넘어간다.
-\hspace{20pt}2. 각 객체 \(X\)와 \(Y\)에 대해, \(X\)에서 \(Y\)로 가는
-\hspace{20pt}화살표들의 집합 \(\text{Hom}(X, Y)\).
-\hspace{20pt}3. 각 객체 \(X\)에 대해, \(X\)에서 자기 자신으로 가는
-\hspace{20pt}항등 화살표(identity arrow) \(\text{id}_X\).
-\hspace{20pt}4. 각 세 개의 객체 \(X\), \(Y\), \(Z\)에 대해 두
-\hspace{20pt}화살표 \(f \in \text{Hom}(X, Y)\) 및 \(g \in \text{Hom}(Y, Z)\)에 대해
-\hspace{20pt}합성 화살표(composite arrow) \(g \circ f \in \text{Hom}(X, Z)\).
-ewline
-\hspace{20pt}이 합성 연산은 결합 법칙을 만족해야 하며,
-\hspace{20pt}모든 객체 \(X\)에 대해 항등원 법칙을 만족해야 합니다:
-\hspace{20pt}1. (결합 법칙) 세 개의 화살표 \(f \in \text{Hom}(W, X)\),
-\hspace{20pt}\(g \in \text{Hom}(X, Y)\), \(h \in \text{Hom}(Y, Z)\)에 대해,
-\hspace{20pt}\(h \circ (g \circ f) = (h \circ g) \circ f\).
-\hspace{20pt}2. (항등원 법칙) 모든 화살표 \(f \in \text{Hom}(X, Y)\)에 대해,
-\hspace{20pt}\(\text{id}_Y \circ f = f\) 및 \(f \circ \text{id}_X = f\).
-ewline
-\hspace{20pt}다양한 카테고리의 예로는 집합의 카테고리 \(\textbf{Set}\),
-\hspace{20pt}위상 공간의 카테고리 \(\textbf{Top}\), 아벨 군의 카테고리
-\hspace{20pt}\(\textbf{Ab}\) 등이 있습니다. 이론 컴퓨터 과학에서는 
-\hspace{20pt}프로그래밍 언어의 의미론을 연구하기 위해 카테고리 이론을 사용합니다.
+\hspace{20pt}
 \begin{tikzpicture}
 \filldraw[fill=blue!10, draw=white] (0, 0) circle (1.2);
 \filldraw[fill=orange!70, draw=white] (-0.5, -0.5) rectangle (0.5, 0.5);
 \node at (0, 0) {$F$};
 \node at (0, -0.9) {$G'$};
 \end{tikzpicture}
-\hspace{20pt}카테고리 이론(category theory)은 
-\hspace{20pt}수학 및 이론 컴퓨터 과학에서 구조들과 그 사이의 관계
-\hspace{20pt}들을 연구하는 학문입니다. 카테고리(category)는 객체(objects)와
-\hspace{20pt}화살표(arrows 또는 morphisms)로 구성됩니다. 각 화살표는
-\hspace{20pt}두 객체 사이를 연결하며, 함수처럼 행동합니다. 
-ewline
-\hspace{20pt}카테고리는 다음과 같은 구성 요소를 가집니다:
-\hspace{20pt}1. 객체들의 모임 \(\mathcal{C}\). 틀린 부분이 그냥 넘어간다.
-\hspace{20pt}2. 각 객체 \(X\)와 \(Y\)에 대해, \(X\)에서 \(Y\)로 가는
-\hspace{20pt}화살표들의 집합 \(\text{Hom}(X, Y)\).
-\hspace{20pt}3. 각 객체 \(X\)에 대해, \(X\)에서 자기 자신으로 가는
-\hspace{20pt}항등 화살표(identity arrow) \(\text{id}_X\).
-\hspace{20pt}4. 각 세 개의 객체 \(X\), \(Y\), \(Z\)에 대해 두
-\hspace{20pt}화살표 \(f \in \text{Hom}(X, Y)\) 및 \(g \in \text{Hom}(Y, Z)\)에 대해
-\hspace{20pt}합성 화살표(composite arrow) \(g \circ f \in \text{Hom}(X, Z)\).
-ewline
-\hspace{20pt}이 합성 연산은 결합 법칙을 만족해야 하며,
-\hspace{20pt}모든 객체 \(X\)에 대해 항등원 법칙을 만족해야 합니다:
-\hspace{20pt}1. (결합 법칙) 세 개의 화살표 \(f \in \text{Hom}(W, X)\),
-\hspace{20pt}\(g \in \text{Hom}(X, Y)\), \(h \in \text{Hom}(Y, Z)\)에 대해,
-\hspace{20pt}\(h \circ (g \circ f) = (h \circ g) \circ f\).
-\hspace{20pt}2. (항등원 법칙) 모든 화살표 \(f \in \text{Hom}(X, Y)\)에 대해,
-\hspace{20pt}\(\text{id}_Y \circ f = f\) 및 \(f \circ \text{id}_X = f\).
-ewline
-\hspace{20pt}다양한 카테고리의 예로는 집합의 카테고리 \(\textbf{Set}\),
-\hspace{20pt}위상 공간의 카테고리 \(\textbf{Top}\), 아벨 군의 카테고리
-\hspace{20pt}\(\textbf{Ab}\) 등이 있습니다. 이론 컴퓨터 과학에서는 
-\hspace{20pt}프로그래밍 언어의 의미론을 연구하기 위해 카테고리 이론을 사용합니다.
+\hspace{20pt}
 \begin{tikzpicture}
 \filldraw[fill=blue!10, draw=white] (0, 0) circle (1.2);
 \filldraw[fill=orange!30, draw=white] (0, 0) ellipse (0.8 and 0.4);
@@ -648,7 +540,7 @@ Implement two versions of horizontal composition of \hask{safeHead} after \hask{
 Do the same with the horizontal composition of \hask{reverse} after \hask{safeHead}. 
 \end{exercise}
 
-\subsection{휘스커링(Whiskering)}
+\subsection{Whiskering}
 
 대개 수평 합성은 하나의 자연 변환이 항등 변환(identity)일 때 사용됩니다. 이러한 합성에 대한 축약 표시법이 있습니다. 예를 들어, $\alpha \circ id_F$는 $\alpha \circ F$로 씁니다.
 
@@ -741,7 +633,7 @@ h_alpha_f = fmap alpha
 
 여기서 직관적으로 이해할 수 있는 것은 우리가 세 겹의 컨테이너(용기)를 가지고 있다는 것이며, 중간 컨테이너를 재배치하고 바깥 컨테이너와 모든 내부 컨테이너는 그대로 둔다는 것입니다.
 
-\subsection{교환 법칙 (Interchange law)}
+\subsection{Interchange law}
 
 우리는 아래 도표에서 볼 수 있듯이 수직 합성과 수평 합성을 결합할 수 있습니다:
 \[
@@ -766,7 +658,7 @@ h_alpha_f = fmap alpha
 교환 법칙은 합성의 순서가 중요하지 않음을 나타냅니다: 먼저 수직 합성을 하고 가로 합성을 하거나, 먼저 가로 합성을 하고 수직 합성을 할 수 있습니다.
 
 
-\section{보편적 구성 다시 보기}
+\section{Universal Constructions Revisited}
 
 노자(Lao Tzu)는 말합니다, 가장 단순한 패턴이 가장 명확합니다.
 
@@ -796,7 +688,7 @@ h_alpha_f = fmap alpha
 
 
 
-\subsection{객체 선택}
+\subsection{Picking objects}
 
 심지어 어떤 물체를 가리키는 것과 같은 단순한 작업도 범주 이론(category theory)에서는 특별한 해석이 있습니. 우리는 이미 집합의 요소를 가리키는 것이 그 집합으로 향하는 단일 원소 집합의 함수(function)를 선택하는 것과 동등하다는 것을 보았습니. 마찬가지로, 범주에서 객체를 선택하는 것은 단일 객체 범주에서의 함자(functor)를 선택하는 것과 동등합니. 또는 다른 범주에서의 상수 함자를 이용하여 수행할 수 있습니.
 
@@ -804,7 +696,7 @@ h_alpha_f = fmap alpha
 
 우리의 함자(functors)와 그들 사이의 자연 변환(natural transformations)을 신중하게 선택함으로써 이제까지 본 모든 보편적 구성(universal constructions)을 재구성할 수 있습니다.
 
-\subsection{코스팬(cospan)들을 자연 변환(natural transformation)으로서}
+\subsection{Cospans as natural transformations}
 
 합의(definition of a sum) 정의는 더할 두 개의 객체(object)를 선택하는 것과 매핑(mapping) 결과의 대상이 될 세 번째 객체를 선택하는 것을 필요로 합니다.
 
@@ -861,7 +753,7 @@ $\alpha$에 대한 자연성 조건(naturality condition)은 자명합니다, �
 많은 코스판(cospan)이 동일한 세 개의 객체를 공유할 수 있습니다. 이는 두 함자(functor) $D$와 $\Delta_x$ 사이에 많은 자연 변환(natural transformation)이 있을 수 있다는 것을 의미합니다. 이러한 자연 변환들은 함자 범주(functor category) $[\mathbf{2}, \mathcal{C}]$에서 하나의 동형사상 집합(hom-set)을 이루며, 즉:
 \[ [\mathbf{2}, \mathcal{C}](D, \Delta_x) \]
 
-\subsection{코스팬의 함자성(Functoriality of cospans)}
+\subsection{Functoriality of cospans}
 
 $x$의 물체(object)를 코스팬(cospan)에서 변형하기 시작할 때 어떤 일이 일어나는지 생각해 봅시다. 우리는 $x$를 코스팬들의 집합으로 매핑하는 매핑 $F$를 가지고 있습니다:
 \[ F x = [\mathbf{2}, \mathcal{C}](D, \Delta_x) \]
@@ -888,7 +780,7 @@ $\mu_1$에서 $u_1$로 가려면 단순히 $m \colon x \to y$와 함께 뒤에 �
 \nu_2 = m \circ \mu_2 \\
 \end{align*}
 
-\subsection{합(함(sum))이 보편적인 코스팬(cospan)임}
+\subsection{Sum as a universal cospan}
 
 모든 cospan들 중 $a$와 $b$ 쌍에 대해 만들 수 있는 것들 중에서, 화살표 $\text{Left}$와 $\text{Right}$가 $a + b$로 수렴하는 것이 매우 특별합니다. 이 cospan에서 다른 어떤 cospan으로의 유일한 매핑(mapping)이 존재합니다---이는 두 삼각형을 움직이게(commute) 만드는 매핑입니다.
 \[
@@ -923,7 +815,7 @@ $x$ 위의 코스팬(cospan)은 자연 변환(natural transformation)이고, 이
 
 실제로, 이 동형사상(naturality condition for this isomorphism)의 자연성 조건이 합(sum)의 정의에서 삼각형들의 교환 조건으로 변환된다는 것을 보일 수 있습니 다. 따라서 합의 정의는 단일한 하나의 방정식으로 대체될 수 있습니다.
 
-\subsection{곱(Product)으로서의 일반적 퍼짐(Universal Span)}
+\subsection{Product as a universal span}
 
 유사한 논증을 곱(product)의 범주의 보편적인 구성(construction)으로 만들 수 있습니다. 이번에도 막대 그림 범주(stick-figure category) $\mathbf{2}$와 함자(functor) $D$로 시작합니다. 하지만 이번에는 반대 방향으로 가는 자연 변환(natural transformation)을 사용합니다.
 \[ \alpha \colon \Delta_x \to D \]
@@ -960,7 +852,7 @@ a = D\, 1 && b = D \, 2
  \end{tikzcd}
 \]
 
-\subsection{지수(Exponentials)}
+\subsection{Exponentials}
 
 지수, 또는 함수 객체(function objects), 는 이 교환 다이어그램(commuting diagram)에 의해 정의됩니다.
 \[
@@ -1117,7 +1009,7 @@ h
 \[ \varepsilon_{a b} \circ (h \times id_a) = f \]
 우리가 도출하기로 한 것.
 
-\section{극한(Limits)과 쌍대극한(Colimits)}
+\section{Limits and Colimits}
 
 이전 섹션에서는 자연변환(natural transformations)을 사용하여 합(sum)과 곱(product)을 정의하였습니다. 이들은 매우 단순한 막대기 도형 카테고리인 $\mathbf{2}$에서 함자로 정의된 도표들 사이의 변환들이었으며, 그 중 하나의 함자는 상수 함자(constant functor)였습니다.
 
@@ -1152,52 +1044,7 @@ D 1
 \\
 & D 3
  \end{tikzcd}
-\qquad
-
-카테고리 이론(category theory)에 대한 상당수의 연구는
-일반적인 대수적 구조(algebraic structures)를 추상적으로 탐구하는 것에 초점을 둡니다.
-우리는 이러한 구조들을
-범주(category)라고 부르며,
-이러한 범주의 예시로는 집합(set), 군(group), 능환(ring), 모노이드(monoid) 등이 있습니다.
-범주는 객체(object)와 사상(morphism)으로 구성됩니다.
-각 객체 \(A, B, C, \ldots\)에 대해 사상 \(f: A \rightarrow B\), \(g: B \rightarrow C\) 등이 있습니다.
-이 사상들은 합성(composition)과 항등(identity) 연산을 만족해야 합니다\ldots
-
-범주 \(\mathcal{C}\)에서
-모든 두 객체 \(A\)와 \(B\) 사이에는 사상의 모음 \(\hom_{\mathcal{C}}(A, B)\)이 존재합니다.
-사상의 합성은 결합 법칙(결합 법칙: 영문 필요시: associativity)을 만족합니다.
-즉, 모든 \(f: A \rightarrow B\), \(g: B \rightarrow C\), \(h: C \rightarrow D\)에 대해,
-\[ h \circ (g \circ f) = (h \circ g) \circ f \]
-가 성립합니다.
-또한, 각 객체 \(A\)에 대해
-항등 사상 \( \operatorname{id}_A: A \rightarrow A \)가 존재하여,
-각 사상 \(f: A \rightarrow B\)와 \(g: B \rightarrow A\)에 대해
-\[ \operatorname{id}_B \circ f = f \quad \text{와} \quad g \circ \operatorname{id}_B = g \]
-가 성립합니다.
-
-모노이드(monoid)는 하나의 객체로 이루어진 범주와 같습니다.
-이때, 사상은 모노이드의 원소이며, 사상의 합성은 모노이드 연산입니다.
-예를 들어, 정수의 집합 \((\mathbb{Z}, +, 0)\)는 모노이드입니다.
-범주는 또한 다른 범주 간의 구조적 관계를 연구할 수 있습니다.
-펑터(functor)는 범주 사이의 사상입니다.
-\begin{itemize}
-\item 하나의 범주 \(\mathcal{C}\)에서 다른 범주 \(\mathcal{D}\)로 가는 펑터 \(F\)는 각 객체 \(A \in \mathcal{C}\)에 \(\mathcal{D}\)의 객체 \(F(A)\)를 대응시키고,
-각 사상 \(f: A \rightarrow B\)에 \(\mathcal{D}\)의 사상 \(F(f): F(A) \rightarrow F(B)\)를 대응시킵니다.
-\end{itemize}
-
-
-펑터는 합성 및 항등 사상을 보존합니다.
-즉,
-\[
-F(\operatorname{id}_A) = \operatorname{id}_{F(A)} \quad \text{와} \quad F(g \circ f) = F(g) \circ F(f) \]
-가 성립합니다.
-이러한 의미에서 펑터는 범주 간의 구조를 보존하는 매핑을 제공합니다.
-위를 요약하자면, 카테고리 이론은 수학의 다양한 분과를
-통합하고 추상화할 수 있는 강력한 도구를 제공합니다.
-
-다음으로는 자연변환(natural transformation)에 대해 설명하겠습니다.
-자연변환은 두 펑터 사이의 사상입니다.
-예를 들어, 두 펑터 \(F, G: \mathcal{C} \rightarrow \mathcal{D}\)가 존재합니다.
+ \qquad
 \begin{tikzcd}
  D 1
  \arrow[rr, red]
@@ -1240,7 +1087,7 @@ $\Set$-값(valued) 함자의 극한(limit)은 특히 간단한 특성을 가집�
 Show that the limit of a ``walking arrow'' category, that is a two-object category with an arrow connecting the two objects, has the same elements as the first object in the diagram (``elements'' are the arrows from the terminal object).
 \end{exercise}
 
-\subsection{등화기(Equalizers)}
+\subsection{Equalizers}
 
 많은 고등학교 수학은 방정식(equations) 또는 방정식 시스템(systems of equations)을 해결하는 방법을 배우는 것을 포함합니다.
 방정식은 무언가를 생성하는 두 가지 다른 방법의 결과를 동일하게 만듭니다.
@@ -1315,7 +1162,7 @@ B
 \]
 이 경우 $a$는 $f a = g a$를 만족하는 $A$의 원소입니다. 이는 단지 $a$가 두 개의 방정식 쌍의 해라는 것을 의미합니다. 보편성(universality)이란 $p \circ e = a$를 만족하는 $E$의 고유한 원소 $e$가 존재한다는 것을 의미합니다. 다시 말해서, $E$의 원소들은 방정식 시스템의 해와 일대일 대응 관계에 있습니다.
 
-\subsection{코애쿨라이저(Coequalizers)}
+\subsection{Coequalizers}
 
 등식화하거나 교차하는 것의 이중(dual)은 무엇인가요? 그것은 공통점을 발견하고 것들을 버킷(buckets)으로 조직하는 과정입니다. 예를 들어, 우리는 정수를 짝수와 홀수 버킷으로 분류할 수 있습니다. 범주 이론(카테고리 이론)에서는 이 버킷화(bucketing) 과정을 동등자(coequalizers)에 의해 설명합니다.
 
@@ -1383,9 +1230,7 @@ q' s = if even len
 \end{haskell}
 \end{exercise}
 
-\subsection{말단 대상(terminal object)의 존재}
-
-
+\subsection{The existence of the terminal object}
 
 노자(Lao Tzu)는 말합니다: 위대한 행위는 작은 일들로 이루어집니다.
 
@@ -1431,7 +1276,7 @@ A \index{약한 말단 집합(weakly terminal set)}\emph{약한 말단 집합}�
 
 해의 집합이 가지는 이 성질은 Freyd의 쌍대 함자 정리(the Freyd's Adjoint Functor Theorem) 증명에서 유용할 것입니다.
 
-\section{요네다 보조정리(Yoneda Lemma)}
+\section{The Yoneda Lemma}
 
 한 범주 $\mathcal{C}$에서 집합의 범주로의 함자(functor)는 이 범주의 집합(Category of Sets)에서의 모델로 생각할 수 있습니다. 일반적으로 모델링(modeling)은 손실이 있는 과정입니다: 즉, 일부 정보를 버립니다. 상수 $\Set$ 값의 함자는 극단적인 예입니다: 이는 전체 범주를 단일 집합과 그 항등 함수(identity function)로 매핑합니다.
 
@@ -1475,10 +1320,7 @@ A \index{약한 말단 집합(weakly terminal set)}\emph{약한 말단 집합}�
 
 \draw[brown] (\ax, \ay) edge[->, shorten > = 4 pt] (\zx, \zy);
 \end{tikzpicture}
-\hspace{80pt}여기서 $y$-좌표의 이동은\\
-\hspace{80pt}교환 법칙(commutativity)으로부터\\
-\hspace{80pt}결정되며 주어진
-<|vq_3133|>
+\hspace{80pt}
 \begin{tikzpicture}
 \def\ax{0}
 \def\ay{0.5}
@@ -1567,10 +1409,7 @@ $\cat C(a, -)$ 함자(hom-functor)의 그림을 보면, 그것이 $a$ 자체에 
 \draw[blue] (\ax, \ay) edge[->, "$h$", bend right, shorten > = 4 pt] (\xx, \xy);
 
 \end{tikzpicture}
-\hspace{80pt}여기서 $y$-좌표의 이동은\\
-\hspace{80pt}교환 법칙(commutativity)으로부터\\
-\hspace{80pt}결정되며 주어진
-<|vq_3133|>
+\hspace{80pt}
 \begin{tikzpicture}
 
 \def\ax{0}
@@ -1636,7 +1475,7 @@ defined above is a natural transformation. Hint: Vary $x$ using some $f \colon x
 Show that the formula for $\alpha_x$ can be derived from the assumption that $\alpha_a (id_a) = p$ and the naturality condition. Hint: The lifting of $h$ by the hom-functor $\cat C(a, h)$ is given by post-composition.
 \end{exercise}
 
-\subsection{프로그래밍에서의 요네다 보조정리(Yoneda lemma)}
+\subsection{Yoneda lemma in programming}
 
 이제 사소한 부분을 다루겠습니다: 요네다 보조정리(Yoneda Lemma)의 증명은 직접적으로 Haskell 코드로 변환됩니다. 우리는 hom-함자(hom-functor) \hask{a->x}와 어떤 함자(functor) \hask{f} 사이의 자연 변환(natural transformation)의 타입(type)으로 시작하여, 이것이 \hask{f}가 \hask{a}에 작용하는 타입과 동등함을 보입니다.
 \begin{haskell}
@@ -1665,7 +1504,7 @@ forall x. (a -> x) -> x
 
 Continuation-passing style은(Continuation-passing style) 다루기 어렵습니다. 왜냐하면 continuations의(compositions) 구성이 매우 복잡하여, 이는 프로그래머들이 흔히 ``콜백 지옥''(callback hell)이라고 부르는 결과를 초래하기 때문입니다. 다행히도 continuations는(compositions) 하나의 모나드(monad)를 형성하며, 이는 그들의 구성을 자동화할 수 있음을 의미합니다.
 
-\subsection{반변(contravariant) Yoneda 레마(lemma)}
+\subsection{The contravariant Yoneda lemma}
 
 몇 개의 화살표를 뒤집으면, 요네다 보조정리(Yoneda lemma)는 반변 함자(contravariant functors)에도 적용할 수 있습니다. 이는 반변 함자 $\mathcal{C}(-, a)$와 반변 함자 $F$ 사이의 자연 변환(natural transformations)에서 작동합니다.
 
@@ -1682,7 +1521,7 @@ coyoneda_1 :: Contravariant f => f a -> (forall x. (x -> a) -> f x)
 coyoneda_1 y = \h -> contramap h y
 \end{haskell}
 
-\section{요네다 매장(Yoneda Embedding)}
+\section{Yoneda Embedding}
 
 폐쇄 범주(closed category)에서, 우리는 hom-집합(hom-sets)의 대체물로서 지수 객체(exponential objects)를 가집니다. 이는 집합의 범주(category of sets)에서 명백하게 나타나는 일로, hom-집합이 집합이기 때문에 자동적으로 객체가 됩니다.
 
@@ -1750,7 +1589,7 @@ fromNat alpha = alpha id
 
 이것이 바로 이전 장들에서 수많은 동형사상을 증명하기 위해 우리가 계속 사용해온 결과입니다.
 
-\section{표현 가능 함자(Representable Functors)}
+\section{Representable Functors}
 
 대상은 co-프리셰이프 카테고리의 functor들이며, 이는 $\mathcal{C}$의 대상들에 집합들을 할당합니다. 이러한 functor들 중 일부는 참조 대상 $a$를 선택하고, 모든 대상 $x$에 대해 그들의 hom-집합(hom-sets) $\mathcal{C}(a, x)$을 할당함으로써 작동합니다:
 \[ F x = \cat C(a, x) \]
@@ -1779,7 +1618,7 @@ Describe limits and colimits as representing objects. What are the functors they
 Consider a \emph{singleton functor} $F \colon \cat C \to \Set$ that assigns to each object $c$ a singleton set $\{c\}$ that contains just that object (that is, a different singleton for every object). Define the action of $F$ on arrows. Show that $F$ being representable is equivalent to $\cat C$ having an initial object.
 \end{exercise}
 
-\subsection{추측 게임(The guessing game)}
+\subsection{The guessing game}
 
 대상들이 다른 대상들과 상호작용하는 방식에 의해 설명될 수 있다는 아이디어는 때때로 상상의 추측 게임을 통해 설명되기도 합니다. 한 범주론(category theorist) 학자가 범주에서 비밀 대상을 선택하고, 다른 학자가 그것이 어떤 대상인지를 (물론 동형사상(isomorphism)까지 포함해) 추측해야 합니다.
 
@@ -1791,7 +1630,7 @@ Consider a \emph{singleton functor} $F \colon \cat C \to \Set$ that assigns to e
 
 그러나 충분히 영리한 상대는 여전히 우리를 속일 수 있읍니다. 그들이 우리에게 보여주는 사전층(presheaf)는 환상적인 객체를 묘사할 수 있으며---그들의 상상의 산물일 수 있으며---우리는 이를 구분할 수 없을 것입니니다. 그러한 상상의 객체가 실제 객체만큼 흥미로운 경우가 많다는 것이 밝혀졌습니다.
 
-\subsection{프로그래밍에서 표현가능한 함자(Representable functors)}
+\subsection{Representable functors in programming}
 
 Haskell에서 우리는 다음 두 가지 함수를 사용하여 대응함을 증명하는 표현 가능한 펑터(representable functors)의 클래스를 정의합니다: \hask{tabulate} 함수는 함수를 조회 테이블로 바꾸며, \hask{index} 함수는 표기 타입 \hask{Key}를 사용하여 그 내부를 인덱싱합니다.
 
@@ -1853,7 +1692,7 @@ The list functor is not representable. But can it be considered a sum or represe
 
 그러나 왜 화살표가 끝까지 이어지지 않는가? 무한 범주($\infty$-categories)에 들어가 보자. 이는 호기심에서 끝나지 않고 실용적인 응용을 가지고 있습니니다. 예를 들어, $\infty$-범주는 대수적 위상수학(algebraic topology)에서 점, 점 사이의 경로, 경로가 훑고 지나가는 표면, 표면이 훑고 지나가는 부피 등을 묘사하는데 사용됩니니다. 그리고 계속해서 무한히 이어집니니다.
 
-\section{유용한 공식들}
+\section{Useful Formulas}
 \begin{itemize}
 \item Yoneda lemma for covariant functors:
 \[ [\mathcal{C}, \mathbf{Set}]( \mathcal{C}(a, -), F) \cong F a \]
